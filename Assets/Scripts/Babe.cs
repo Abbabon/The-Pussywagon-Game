@@ -8,7 +8,6 @@ public class Babe : MonoBehaviour
     private bool interacted = false;
     public int Lane = 1;
     public BabeType babeType;
-    public OptionType preferredOption;
     public int hotness = 5;
 
     [SerializeField]

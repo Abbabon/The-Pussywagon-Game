@@ -6,7 +6,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     private bool isRunning;
-    public float maxTime = 5.0f;
+    public float maxTime = 15.0f;
     private float remainingTime;
 
     public TextMeshProUGUI timerText;
@@ -23,10 +23,9 @@ public class Timer : MonoBehaviour
     void Update()
     {
         if (isRunning){
-            remainingTime -= Time.deltaTime;
+            remainingTime -= Time.deltaTime*GameManager.Instance.SpeedFactor;
 
-            //TODO: change according to display method:
-            timerText.text = Extentions.Reverse(remainingTime.ToString().Substring(0, 3));
+            timerText.text = Extentions.Reverse(((int)remainingTime).ToString());
             if (remainingTime < 0)
                 RanOut();
         }

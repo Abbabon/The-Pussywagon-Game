@@ -6,12 +6,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum BabeType
 {
     Hot = 0,
     Ok = 1,
     Young = 2
+}
+
+public enum OptionType
+{
+    Compliment,
+    FakeBrand,
+    Tickets,
+    Dog,
+    Candy,
+    Drugs
 }
 
 public class GameManager : MonoBehaviour
@@ -23,6 +34,9 @@ public class GameManager : MonoBehaviour
     private int cops;
     public int Cops { get => cops; set => cops = value; }
 
+    public float SpeedFactor = 1.0f;
+    public float SpeedFactorIncrement = 0.65f;
+
     private int cash;
     public int Cash { get => cash; set => cash = value; }
 
@@ -32,9 +46,14 @@ public class GameManager : MonoBehaviour
     private int hotnessGathered;
     public int HotnessScore { get => hotnessGathered; set => hotnessGathered = value; }
 
-    private Dictionary<BabeType, Option[]> babeOptions;
+    private Dictionary<BabeType, OptionType[]> babeOptions;
+    public Dictionary<BabeType, OptionType[]> BabeOptions { get => babeOptions; set => babeOptions = value; }
+
+    private Dictionary<OptionType, int> optionCosts;
+    public Dictionary<OptionType, int> OptionCosts { get => optionCosts; set => optionCosts = value; }
 
     private bool actorsMovable = true;
+
     public bool ActorsMovable { get => actorsMovable; set => actorsMovable = value; }
 
     private PlayerMusic playerMusic;
@@ -58,11 +77,12 @@ public class GameManager : MonoBehaviour
     #endregion
 
     private GameObject player;
+    public PlayerMovement Player { get => player.GetComponent<PlayerMovement>(); }
 
     private void Awake()
     {
         Debug.Log("AWAKE");
-        InitializeBabeDictionary();
+        InitializeBabeDictionaries();
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
         lock (padlock)
         {
@@ -80,37 +100,38 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    private void Update()
+    {
+        HandleScreenFlashing();
+    }
+
     private void Start()
     {
-       if (playerMusic != null){
-            playerMusic.PlayLevelMusic();
-        }
 
     }
 
-    private void InitializeBabeDictionary()
+    private void InitializeBabeDictionaries()
     {
-        babeOptions = new Dictionary<BabeType, Option[]>();
-        Option[] hotOptions = new Option[4];
-        hotOptions[0] = new Option(300, OptionType.iPhone);
-        hotOptions[1] = new Option(300, OptionType.Watch);
-        hotOptions[2] = new Option(400, OptionType.Jewlery);
-        hotOptions[3] = new Option(500, OptionType.Dog);
-        babeOptions.Add(BabeType.Hot, hotOptions);
+        babeOptions = new Dictionary<BabeType, OptionType[]>();
 
-        Option[] okOptions = new Option[4];
-        okOptions[0] = new Option(0, OptionType.Compliment);
-        okOptions[1] = new Option(50, OptionType.Chocolate);
-        okOptions[2] = new Option(100, OptionType.FakeBrand);
-        okOptions[3] = new Option(200, OptionType.Tickets);
-        babeOptions.Add(BabeType.Ok, okOptions);
+        OptionType[] hotOptions = { OptionType.Drugs, OptionType.Dog };
+        BabeOptions.Add(BabeType.Hot, hotOptions);
 
-        Option[] youngOptions = new Option[4];
-        youngOptions[0] = new Option(100, OptionType.HelloKitty);
-        youngOptions[1] = new Option(10, OptionType.CandyBracelet);
-        youngOptions[2] = new Option(5, OptionType.Candy);
-        youngOptions[3] = new Option(50, OptionType.Slime);
-        babeOptions.Add(BabeType.Young, youngOptions);
+        OptionType[] okOptions = { OptionType.Tickets, OptionType.FakeBrand, OptionType.Drugs, OptionType.Dog };
+        BabeOptions.Add(BabeType.Ok, okOptions);
+
+        OptionType[] youngOptions = { OptionType.Tickets, OptionType.FakeBrand, OptionType.Candy, OptionType.Dog };
+        BabeOptions.Add(BabeType.Young, youngOptions);
+
+        optionCosts = new Dictionary<OptionType, int>
+        {
+            { OptionType.Compliment, 0 },
+            { OptionType.Candy, 10 },
+            { OptionType.Tickets, 300 },
+            { OptionType.FakeBrand, 400 },
+            { OptionType.Drugs, 1000 },
+            { OptionType.Dog, 4000 }
+        };
     }
 
     public AudioClip GetLevelMusic()
@@ -120,8 +141,8 @@ public class GameManager : MonoBehaviour
         {
             case 0:
                 return Resources.Load<AudioClip>("Music/Yalda");
-            case 1:
-                return Resources.Load<AudioClip>("Music/Beitar");
+            //case 1:
+            //return Resources.Load<AudioClip>("Music/Beitar");
             default:
                 return null;
         }
@@ -130,7 +151,7 @@ public class GameManager : MonoBehaviour
     private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         player = GameObject.Find("Player");
-        playerMusic = player.GetComponent<PlayerMusic>();
+        playerMusic = Player.GetComponent<PlayerMusic>();
 
         // meaning after the title screen:
         if (scene.buildIndex > 0)
@@ -138,6 +159,10 @@ public class GameManager : MonoBehaviour
             dialogueCanvas = GameObject.Find("DialogueCanvas");
             if (dialogueCanvas != null)
                 dialogueCanvas.GetComponent<Canvas>().enabled = false;
+
+            GameObject paparazziCanvas = GameObject.Find("PaparazziCanvas");
+            if (paparazziCanvas != null)
+                paparaziFlash = paparazziCanvas.GetComponent<CanvasGroup>();
 
             uiCanvas = GameObject.Find("UICanvas");
 
@@ -150,8 +175,8 @@ public class GameManager : MonoBehaviour
             if (gameOverCanvas != null)
                 gameOverCanvas.GetComponent<Canvas>().enabled = false;
 
-            dialogueButtons = new GameObject[4];
-            for (int i = 0; i < 4; i++)
+            dialogueButtons = new GameObject[6];
+            for (int i = 0; i < 6; i++)
             {
                 dialogueButtons[i] = GameObject.Find(String.Format("DialogueButton{0}", i + 1));
             }
@@ -161,15 +186,17 @@ public class GameManager : MonoBehaviour
 
             moneyCounter = GameObject.Find("MoneyCounter");
             babesCounter = GameObject.Find("BabesCounter");
-            copsCounters = new GameObject[3];
-            for (int i = 0; i < 3; i++)
-            {
+            copsCounters = new GameObject[6];
+            for (int i = 0; i < 5; i++){
                 copsCounters[i] = GameObject.Find(String.Format("CopCounter{0}", i + 1));
             }
 
-            //TODO: add this cash in each level, and what you saved on the previous level 
-            cash = 3000;
+
+
+            //TODO: add this cash in each level, and add it to what you saved on the previous level 
+            cash = 15000;
             cops = 0;
+            SpeedFactor = 1;
             babesGathered = 0;
             hotnessGathered = 0;
             UpdateCashGUI();
@@ -188,8 +215,10 @@ public class GameManager : MonoBehaviour
 
         dialogueTimer.StartTimer();
         currentBabe = babe;
-        for (int i = 0; i < 4; i++){
-            dialogueButtons[i].GetComponent<DialogueButton>().ChangeOption(babeOptions[currentBabe.babeType][i]);
+        List<OptionType> options = optionCosts.Keys.ToList();
+        for (int i = 0; i < 6; i++)
+        {
+            dialogueButtons[i].GetComponent<DialogueButton>().ChangeOption(options[i]);
         }
         dialogueSprite.GetComponent<Image>().sprite = babe.gameObject.GetComponent<SpriteRenderer>().sprite;
         dialogueHotnessCounter.GetComponent<TextMeshProUGUI>().text = babe.hotness.ToString();
@@ -200,13 +229,14 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMusic>().LowerMusicVolume();
     }
 
-    public void ChooseOption(Option option)
+    public void ChooseOption(OptionType option)
     {
         dialogueTimer.Stop();
 
-        if (currentBabe.preferredOption == option.Type)
+        //does the babe accept the option?
+        if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived()))
         {
-            Debug.Log("Chose Correctly");
+            Debug.Log("Chose Correctly!");
 
             //TODO: update babes counter
             babesGathered += 1;
@@ -222,8 +252,37 @@ public class GameManager : MonoBehaviour
             //TODO: play the queue sound
         }
 
-        cash -= option.Cost;
+        //TODO: act on drugs if chosen!
+        if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported())){
+            CallThePopo();
+        }
+
+        cash -= optionCosts[option];
         CloseDialogue();
+    }
+
+    private bool ComplimentReceived()
+    {
+        return Random.Range(0, 100) < ((currentBabe.babeType == BabeType.Young) ? 80 : 40);
+    }
+
+    private bool DrugsReported()
+    {
+        return (Random.Range(0, 100) <= 33);
+    }
+
+    public void CallThePopo()
+    {
+        //TODO: play siren sound
+
+        if (cops < 5){
+            cops += 1;
+            SpeedFactor += SpeedFactorIncrement;
+        }
+        else{
+            Debug.Log("Max amount of cops!");
+        }
+        UpdateCopsGUI();
     }
 
     public void CloseDialogue()
@@ -250,8 +309,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCopsGUI()
     {
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 5; i++){
             copsCounters[i].GetComponent<Image>().sprite = Resources.Load<Sprite>((i < cops) ? "UI/police-full" : "UI/police-empty");
         }
     }
@@ -271,14 +329,38 @@ public class GameManager : MonoBehaviour
         UpdateCashGUI();
 
         //GAME OVER
-        if (cash < 0)
-        {
+        if (cash < 0){
             Debug.Log("GameOver!");
             uiCanvas.GetComponent<Canvas>().enabled = false;
             gameOverCanvas.GetComponent<Canvas>().enabled = true;
             return false;
         }
         return true;
+    }
+
+    public CanvasGroup paparaziFlash;
+    private bool lowerFlash = false;
+    public float flashDuration = 3.0f;
+    internal void Flash()
+    {
+        paparaziFlash.alpha = 1;
+        Invoke("EndFlash", flashDuration);
+    }
+
+    private void EndFlash(){
+        lowerFlash = true;
+    }
+
+    private void HandleScreenFlashing()
+    {
+        if (lowerFlash && paparaziFlash != null)
+        {
+            paparaziFlash.alpha = paparaziFlash.alpha - Time.deltaTime;
+            if (paparaziFlash.alpha <= 0){
+                paparaziFlash.alpha = 0;
+                lowerFlash = false;
+            }
+        }
     }
 
     #endregion

@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         //TODO: remove this when starting level
         if (GameManager.Instance.ActorsMovable)
         {
-            rb.velocity = new Vector2(horizontalVelocity * Time.deltaTime, rb.velocity.y);
+            rb.velocity = new Vector2((horizontalVelocity * GameManager.Instance.SpeedFactor * Time.deltaTime), rb.velocity.y);
 
             if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow)) && (currentLane < numberOfLanes))
             {

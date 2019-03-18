@@ -8,22 +8,21 @@ using UnityEngine.UI;
 public class DialogueButton : MonoBehaviour
 {
     public bool isAvailable;
-    public Option currentOption;
+    public OptionType currentOption;
     public TextMeshProUGUI costText;
 
     public Color availableColor = Color.green;
     public Color unavailableColor = Color.red;
 
-    public void ChangeOption(Option option)
+    public void ChangeOption(OptionType optionType)
     {
-        currentOption = option;
-        isAvailable = (currentOption.Cost <= Math.Max(GameManager.Instance.Cash, 0));
+        currentOption = optionType;
+        isAvailable = (GameManager.Instance.OptionCosts[currentOption] <= Math.Max(GameManager.Instance.Cash, 0));
 
-        costText.text = Extentions.Reverse(currentOption.Cost.ToString());
+        costText.text = Extentions.Reverse(GameManager.Instance.OptionCosts[currentOption].ToString());
         costText.color = isAvailable ? availableColor : unavailableColor;
 
-        GetComponent<Image>().sprite = Resources.Load<Sprite>(String.Format("UI/{0}", currentOption.Type.ToString()));
-
+        GetComponent<Image>().sprite = Resources.Load<Sprite>(String.Format("UI/{0}", currentOption.ToString()));
     }
 
     public void OptionClicked()

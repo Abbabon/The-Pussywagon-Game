@@ -29,4 +29,9 @@ public class UIHandler : MonoBehaviour
         GameManager.Instance.TogglePause();
     }
 
+    public void AddCops()
+    {
+        GameManager.Instance.CallThePopo();
+    }
+
 }
