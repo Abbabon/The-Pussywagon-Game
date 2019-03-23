@@ -10,7 +10,8 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get { return _instance; } }
     private static readonly object padlock = new object();
 
-    AudioSource currentAudioSource;
+    [Space(10)]
+    private AudioSource currentAudioSource;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,6 +27,7 @@ public class SoundManager : MonoBehaviour
             else
             {
                 _instance = this;
+                LoadSoundEffects();
             }
         }
 
@@ -86,6 +88,32 @@ public class SoundManager : MonoBehaviour
     }
 
     #region SoundEffects
+
+    public enum SoundEffect
+    {
+        carStart,
+        cash,
+        crashHole,
+        crashPolice,
+        crashLamed,
+        flash,
+        siren,
+        stop
+    }
+
+    private Dictionary<SoundEffect, AudioClip> soundEffects;
+    private void LoadSoundEffects()
+    {
+        soundEffects = new Dictionary<SoundEffect, AudioClip>();
+        foreach (SoundEffect soundEffect in (SoundEffect[])Enum.GetValues(typeof(SoundEffect))){
+            soundEffects.Add(soundEffect, Resources.Load<AudioClip>(String.Format("Effects/{0}", soundEffect)));
+        }
+    }
+
+    public void PlaySoundEffect(SoundEffect soundEffect)
+    {
+        currentAudioSource.PlayOneShot(soundEffects[soundEffect]);
+    }
 
     #endregion
 

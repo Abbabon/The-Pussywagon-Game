@@ -241,6 +241,10 @@ public class GameManager : MonoBehaviour
         }
 
         cash -= optionCosts[option];
+
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
+        //TODO: play money animation!
+
         CloseDialogue();
     }
 

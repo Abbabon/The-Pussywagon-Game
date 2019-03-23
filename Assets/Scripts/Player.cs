@@ -103,8 +103,8 @@ public class Player : MonoBehaviour
                 sr.enabled = false;
 
             //TODO: play relevant sound
-            //TODO: music stop
-            //TODO: play relevant animation
+            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashHole);
+            
         }
     }
 
