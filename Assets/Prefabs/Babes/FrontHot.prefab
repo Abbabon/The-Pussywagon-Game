@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7051754898961345228}
   - component: {fileID: 274450848928159729}
   m_Layer: 0
-  m_Name: FrontHot1
+  m_Name: FrontHot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1008387277
-  m_SortingLayer: 2
+  m_SortingLayerID: 1640387517
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ca96b99a7b3994857929eb8b8fcc9063, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.684, y: 2.0106666}
+    oldSize: {x: 0.64125, y: 1.885}
     newSize: {x: 0.5214844, y: 1.5942383}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc427b95918ca43b1bc7b24b04e5e408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lane: 1
   babeType: 0
-  preferredOption: 6
   hotness: 5
   outglowSR: {fileID: 3894986671502124345}
 --- !u!1 &5268334712011505956
@@ -236,15 +236,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1008387277
-  m_SortingLayer: 2
+  m_SortingLayerID: 1640387517
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5246663, y: 1.5973521}
+  m_Size: {x: 0.69125, y: 1.935}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
