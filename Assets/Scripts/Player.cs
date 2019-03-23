@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     public float horizontalVelocity = 50f;
@@ -14,15 +14,14 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     public SwipeController swipeController;
     private SpriteRenderer sr;
-    private PlayerMusic playerMusic;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        playerMusic = GetComponent<PlayerMusic>();
-        playerMusic.PlayLevelMusic();
+        SoundManager.Instance.RegisterAudioSource(GetComponent<AudioSource>());
+        SoundManager.Instance.PlayLevelMusic();
     }
 
     // Update is called once per frame

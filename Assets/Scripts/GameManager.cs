@@ -56,8 +56,6 @@ public class GameManager : MonoBehaviour
 
     public bool ActorsMovable { get => actorsMovable; set => actorsMovable = value; }
 
-    private PlayerMusic playerMusic;
-
     #region GUI
 
     private GameObject uiCanvas;
@@ -77,7 +75,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     private GameObject player;
-    public PlayerMovement Player { get => player.GetComponent<PlayerMovement>(); }
+    public Player Player { get => player.GetComponent<Player>(); }
 
     private void Awake()
     {
@@ -134,24 +132,9 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    public AudioClip GetLevelMusic()
-    {
-        Debug.Log(String.Format("GettingLevelMusic for {0}", SceneManager.GetActiveScene().buildIndex));
-        switch (SceneManager.GetActiveScene().buildIndex)
-        {
-            case 0:
-                return Resources.Load<AudioClip>("Music/Yalda");
-            //case 1:
-            //return Resources.Load<AudioClip>("Music/Beitar");
-            default:
-                return null;
-        }
-    }
-
     private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         player = GameObject.Find("Player");
-        playerMusic = Player.GetComponent<PlayerMusic>();
 
         // meaning after the title screen:
         if (scene.buildIndex > 0)
@@ -225,8 +208,8 @@ public class GameManager : MonoBehaviour
 
         dialogueCanvas.GetComponent<Canvas>().enabled = true;
 
-        player.GetComponent<PlayerMovement>().StartInteracting();
-        player.GetComponent<PlayerMusic>().LowerMusicVolume();
+        Player.StartInteracting();
+        SoundManager.Instance.LowerMusicVolume();
     }
 
     public void ChooseOption(OptionType option)
@@ -287,8 +270,8 @@ public class GameManager : MonoBehaviour
 
     public void CloseDialogue()
     {
-        player.GetComponent<PlayerMovement>().StopInteracting();
-        player.GetComponent<PlayerMusic>().DrivingMusicVolume();
+        Player.StopInteracting();
+        SoundManager.Instance.DrivingMusicVolume();
         currentBabe.MarkInteracted();
         UpdateBabesGUI();
         UpdateCashGUI();
@@ -391,14 +374,14 @@ public class GameManager : MonoBehaviour
         if (paused)
         {
             actorsMovable = true;
-            player.GetComponent<AudioSource>().Play();
+            SoundManager.Instance.StartBackgroundMusic();
             paused = false;
         }
         //can't pause while in dialogue
         else if (actorsMovable)
         {
             actorsMovable = false;
-            player.GetComponent<AudioSource>().Pause();
+            SoundManager.Instance.StopBackgroundMusic();
             paused = true;
         }
     }
