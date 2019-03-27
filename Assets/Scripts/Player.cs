@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        SoundManager.Instance.RegisterAudioSource(GetComponent<AudioSource>());
+        SoundManager.Instance.RegisterDialogueAudioSource(GetComponent<AudioSource>());
         SoundManager.Instance.PlayLevelMusic();
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class SoundManager : MonoBehaviour
     private static readonly object padlock = new object();
 
     [Space(10)]
-    private AudioSource currentAudioSource;
+    private AudioSource currentSoundEffectsAudioSource;
+    private AudioSource currentDialogueAudioSource;
+
+    private readonly String batutaString = "Batuta";
 
     // Start is called before the first frame update
     void Awake()
@@ -28,6 +32,7 @@ public class SoundManager : MonoBehaviour
             {
                 _instance = this;
                 LoadSoundEffects();
+                LoadDialogues();
             }
         }
 
@@ -41,50 +46,55 @@ public class SoundManager : MonoBehaviour
     }
 
     public void PlayLevelMusic(){
-        if (currentAudioSource != null){
+        if (currentSoundEffectsAudioSource != null){
             Debug.Log(String.Format("GettingLevelMusic for {0}", SceneManager.GetActiveScene().buildIndex));
             switch (SceneManager.GetActiveScene().buildIndex)
             {
                 case 0:
-                    currentAudioSource.clip = Resources.Load<AudioClip>("Music/Yalda");
+                   currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Yalda");
                     StartBackgroundMusic();
                     return;
                     //TODO: return this when finding some better soundtrack
                 case 1:
-                    currentAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
+                   currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
                     StartBackgroundMusic();
                     return;
                 default:
-                    currentAudioSource.clip = null;
+                   currentSoundEffectsAudioSource.clip = null;
                     return;
             }
         }
         Debug.Log("Current Audio Source is not found!");
     }
 
-    public void RegisterAudioSource(AudioSource audioSource)
+    public void RegisterSoundEffectsAudioSource(AudioSource audioSource)
     {
-        currentAudioSource = audioSource;
+       currentSoundEffectsAudioSource = audioSource;
+    }
+
+    public void RegisterDialogueAudioSource(AudioSource audioSource)
+    {
+        currentDialogueAudioSource = audioSource;
     }
 
     public void StartBackgroundMusic()
     {
-        currentAudioSource.Play();
+       currentSoundEffectsAudioSource.Play();
     }
 
     public void StopBackgroundMusic()
     {
-        currentAudioSource.Play();
+       currentSoundEffectsAudioSource.Pause();
     }
 
     public void LowerMusicVolume()
     {
-        currentAudioSource.volume = 0.2f;
+       currentSoundEffectsAudioSource.volume = 0.05f;
     }
 
     public void DrivingMusicVolume()
     {
-        currentAudioSource.volume = 0.7f;
+       currentSoundEffectsAudioSource.volume = 0.1f;
     }
 
     #region SoundEffects
@@ -112,7 +122,59 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySoundEffect(SoundEffect soundEffect)
     {
-        currentAudioSource.PlayOneShot(soundEffects[soundEffect]);
+       currentSoundEffectsAudioSource.PlayOneShot(soundEffects[soundEffect]);
+    }
+
+    #endregion
+
+    #region Dialogue
+
+    public enum DialogueCategories
+    {
+        BatutaBye,
+        BatutaGameOverMoney,
+        BatutaGameOverPolice,
+        BatutaHazardHole,
+        BatutaHazardLamed,
+        BatutaHazrdPaparazzi,
+        BatutaHazardPolice,
+        BatutaHot,
+        BatutaLevelStart,
+        BatutaRegular,
+        BatutaRejection,
+        BatutaYoung
+    }
+
+    //TODO: try to refactor this to be more performable
+    private Dictionary<DialogueCategories, List<AudioClip>> dialogues;
+    private void LoadDialogues()
+    {
+        dialogues = new Dictionary<DialogueCategories, List<AudioClip>>();
+        foreach (DialogueCategories dialogueCategory in (DialogueCategories[])Enum.GetValues(typeof(DialogueCategories)))
+        {
+            dialogues.Add(dialogueCategory, new List<AudioClip>());
+            String dialogueCategoryString = dialogueCategory.ToString();
+            Debug.Log(String.Format("Loading Dialogue for {0}", dialogueCategoryString));
+            if (dialogueCategoryString.Contains(batutaString))
+            {
+                for (int i = 1; i < 50; i++)
+                {
+                    String assetPath = String.Format("Dialogue/Batuta/{0}{1}", dialogueCategoryString.Replace(batutaString, ""), i);
+                    AudioClip clip = Resources.Load<AudioClip>(assetPath);
+                    if (clip != null){
+                        dialogues[dialogueCategory].Add(clip);
+                        Debug.Log(String.Format("Loaded {0}", assetPath));
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void PlayRandomDialogue(DialogueCategories dialogueCategory){
+        currentDialogueAudioSource.PlayOneShot(dialogues[dialogueCategory][Random.Range(0, dialogues[dialogueCategory].Count-1)]);
     }
 
     #endregion

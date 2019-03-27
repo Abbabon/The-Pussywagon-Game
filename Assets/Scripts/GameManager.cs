@@ -194,7 +194,21 @@ public class GameManager : MonoBehaviour
 
     public void StartDialogue(Babe babe)
     {
-        //TODO: start dialogue sound:
+        switch (babe.babeType)
+        {
+            case BabeType.Hot:
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHot);
+                break;
+            case BabeType.Young:
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaYoung);
+                break;
+            case BabeType.Ok:
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaRegular);
+                break;
+            default:
+                break;
+        }
+
 
         dialogueTimer.StartTimer();
         currentBabe = babe;
