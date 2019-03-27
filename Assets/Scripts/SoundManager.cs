@@ -39,6 +39,11 @@ public class SoundManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    internal void ToggleSilence()
+    {
+        throw new NotImplementedException();
+    }
+
     // Update is called once per frame
     void Update()
     {

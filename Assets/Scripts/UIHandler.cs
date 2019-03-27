@@ -36,14 +36,19 @@ public class UIHandler : MonoBehaviour
         GameManager.Instance.CloseDialogue();
     }
 
-    public void PauseGame()
-    {
-        GameManager.Instance.TogglePause();
-    }
-
     public void PauseMovement()
     {
         GameManager.Instance.ToggleMovementPause();
+    }
+
+    public void Silence()
+    {
+        SoundManager.Instance.ToggleSilence();
+    }
+
+    public void ExitGameCanvas()
+    {
+        GameManager.Instance.ToggleExitGameCanvas();
     }
 
     public void AddCops()

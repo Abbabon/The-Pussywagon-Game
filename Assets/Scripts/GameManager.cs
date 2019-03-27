@@ -61,11 +61,13 @@ public class GameManager : MonoBehaviour
     #region GUI
 
     private GameObject uiCanvas;
+    private GameObject pauseButton;
     private GameObject dialogueCanvas;
     private GameObject endOfLevelCanvas;
     private GameObject endOfLevelHotnessCounter;
     private GameObject gameOverCanvas;
     private GameObject copsCanvas;
+    private GameObject exitGameCanvas;
     private GameObject dialogueSprite;
     private GameObject dialogueHotnessCounter;
     private GameObject[] dialogueButtons;
@@ -150,6 +152,7 @@ public class GameManager : MonoBehaviour
                 paparaziFlash = paparazziCanvas.GetComponent<CanvasGroup>();
 
             uiCanvas = GameObject.Find("UICanvas");
+            pauseButton = GameObject.Find("PauseButton");
 
             endOfLevelCanvas = GameObject.Find("EndOfLevelCanvas");
             if (endOfLevelCanvas != null)
@@ -171,6 +174,10 @@ public class GameManager : MonoBehaviour
             if (copsCanvas != null)
                 copsCanvas.GetComponent<Canvas>().enabled = false;
 
+            exitGameCanvas = GameObject.Find("ExitGameCanvas");
+            if (exitGameCanvas != null)
+                exitGameCanvas.GetComponent<Canvas>().enabled = false;
+
             dialogueButtons = new GameObject[6];
             for (int i = 0; i < 6; i++)
             {
@@ -187,10 +194,13 @@ public class GameManager : MonoBehaviour
                 copsCounters[i] = GameObject.Find(String.Format("CopCounter{0}", i + 1));
             }
 
-            // add money according to each level's budget
+            // add money and make small changes according to each level's specifications
             switch (SceneManager.GetActiveScene().buildIndex)
             {
                 case 1: //Tutorial
+                    if (pauseButton != null){
+                        pauseButton.SetActive(false);
+                    }
                     cash = 600;
                     break;
                 case 2: //Level 1
@@ -458,22 +468,6 @@ public class GameManager : MonoBehaviour
     }
 
     bool paused = false;
-    internal void TogglePause()
-    {
-        if (paused)
-        {
-            actorsMovable = true;
-            SoundManager.Instance.StartBackgroundMusic();
-            paused = false;
-        }
-        //can't pause while in dialogue
-        else if (actorsMovable)
-        {
-            actorsMovable = false;
-            SoundManager.Instance.StopBackgroundMusic();
-            paused = true;
-        }
-    }
     internal void ToggleMovementPause()
     {
         if (paused)
@@ -485,6 +479,24 @@ public class GameManager : MonoBehaviour
         else if (actorsMovable)
         {
             actorsMovable = false;
+            paused = true;
+        }
+    }
+
+    internal void ToggleExitGameCanvas()
+    {
+        if (paused) //in the menu currently, and pressed cancel
+        {
+            actorsMovable = true;
+            exitGameCanvas.GetComponent<Canvas>().enabled = false;
+            SoundManager.Instance.StartBackgroundMusic();
+            paused = false;
+        }
+        else if (actorsMovable) //can't pause while in dialogue, don't enter the activation phase
+        {
+            actorsMovable = false;
+            exitGameCanvas.GetComponent<Canvas>().enabled = true;
+            SoundManager.Instance.StopBackgroundMusic();
             paused = true;
         }
     }
