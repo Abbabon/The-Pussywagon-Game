@@ -44,6 +44,8 @@ public class HazardPaparazzi : MonoBehaviour
 
     private void Shoot()
     {
+        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardPaparazzi);
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.flash);
         GameManager.Instance.Flash();
     }
 }

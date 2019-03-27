@@ -26,7 +26,7 @@ public class Babe : MonoBehaviour
 
     public void MarkInteracted()
     {
-        this.interacted = true;
+        interacted = true;
         outglowSR.enabled = false;
     }
 
