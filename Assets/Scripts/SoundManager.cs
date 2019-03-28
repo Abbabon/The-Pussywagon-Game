@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour
     private AudioSource currentDialogueAudioSource;
 
     private readonly String batutaString = "Batuta";
+    private readonly String girlsString = "Girls";
 
     // Start is called before the first frame update
     void Awake()
@@ -155,7 +156,18 @@ public class SoundManager : MonoBehaviour
         BatutaLevelStart,
         BatutaRegular,
         BatutaRejection,
-        BatutaYoung
+        BatutaYoung,
+
+        GirlsAllYes,
+        GirlsAllNo,
+        GirlsYoungYes,
+        GirlsBagNo,
+        GirlsDogYes,
+        GirlsTicketsYes,
+        GirlsTicketsNo,
+        GirlsJerusalemComplimentNo,
+        GirlsJerusalemNo,
+        GirlsCop
     }
 
     //TODO: try to refactor this to be more performable
@@ -168,27 +180,32 @@ public class SoundManager : MonoBehaviour
             dialogues.Add(dialogueCategory, new List<AudioClip>());
             String dialogueCategoryString = dialogueCategory.ToString();
             Debug.Log(String.Format("Loading Dialogue for {0}", dialogueCategoryString));
-            if (dialogueCategoryString.Contains(batutaString))
+            for (int i = 1; i < 50; i++)
             {
-                for (int i = 1; i < 50; i++)
-                {
-                    String assetPath = String.Format("Dialogue/Batuta/{0}{1}", dialogueCategoryString.Replace(batutaString, ""), i);
-                    AudioClip clip = Resources.Load<AudioClip>(assetPath);
-                    if (clip != null){
-                        dialogues[dialogueCategory].Add(clip);
-                        Debug.Log(String.Format("Loaded {0}", assetPath));
-                    }
-                    else{
-                        break;
-                    }
+                String assetPath = dialogueCategoryString.Contains(batutaString) ?
+                                    String.Format("Dialogue/{0}/{1}{2}", batutaString, dialogueCategoryString.Replace(batutaString, ""), i) :
+                                    String.Format("Dialogue/{0}/{1}{2}", girlsString, dialogueCategoryString.Replace(girlsString, ""), i);
+                AudioClip clip = Resources.Load<AudioClip>(assetPath);
+                if (clip != null){
+                    dialogues[dialogueCategory].Add(clip);
+                    Debug.Log(String.Format("Loaded {0}", assetPath));
+                }
+                else{
+                    break;
                 }
             }
         }
     }
 
-    public void PlayRandomDialogue(DialogueCategories dialogueCategory){
+    private AudioClip GetRandomDialogueClip(DialogueCategories dialogueCategory)
+    {
+        return dialogues[dialogueCategory][Random.Range(0, dialogues[dialogueCategory].Count - 1)];
+    }
+
+    public void PlayRandomDialogue(DialogueCategories dialogueCategory)
+    {
         currentDialogueAudioSource.Stop();
-        currentDialogueAudioSource.PlayOneShot(dialogues[dialogueCategory][Random.Range(0, dialogues[dialogueCategory].Count-1)]);
+        currentDialogueAudioSource.PlayOneShot(GetRandomDialogueClip(dialogueCategory));
     }
 
     public void PlaySpecificDialogue(DialogueCategories dialogueCategory, int dialogueIndex)
@@ -197,6 +214,19 @@ public class SoundManager : MonoBehaviour
         currentDialogueAudioSource.PlayOneShot(dialogues[dialogueCategory][dialogueIndex]);
     }
 
+    public void PlayTwoRandomDialogues(DialogueCategories dialogueCategory1, DialogueCategories dialogueCategory2)
+    {
+        currentDialogueAudioSource.Stop();
+        StartCoroutine(PlayTwoClips(GetRandomDialogueClip(dialogueCategory1), GetRandomDialogueClip(dialogueCategory2)));
+    }
+
     #endregion
+
+    IEnumerator PlayTwoClips(AudioClip one, AudioClip two)
+    {
+        currentDialogueAudioSource.PlayOneShot(one);
+        yield return new WaitForSeconds(one.length);
+        currentDialogueAudioSource.PlayOneShot(two);
+    }
 
 }

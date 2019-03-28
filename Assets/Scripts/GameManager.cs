@@ -254,7 +254,9 @@ public class GameManager : MonoBehaviour
                 case BabeType.Ok:
                     SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaRegular);
                     break;
-                //TODO: add cops dialogue
+                case BabeType.Cop:
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsCop);
+                    break;
                 default:
                     break;
             }
@@ -298,13 +300,41 @@ public class GameManager : MonoBehaviour
                 babesGathered += 1;
                 hotnessGathered += currentBabe.hotness;
 
-                //TODO: play correct babe sound
-                //f
+                if (option == OptionType.Dog){
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsDogYes);
+                }
+                else if (option == OptionType.Tickets){
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsTicketsYes);
+                }
+                else if (currentBabe.babeType == BabeType.Young){
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsYoungYes);
+                }
+                else{
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsAllYes);
+                }
+
                 currentBabe.gameObject.SetActive(false);
             }
             else{
                 Debug.Log("DENIED");
-                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaRejection);
+
+                if (SceneManager.GetActiveScene().buildIndex == 3){ //jerusalem level
+                    if (option == OptionType.Compliment){
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemComplimentNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    else{
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                }
+                else if (option == OptionType.FakeBrand){
+                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsBagNo, SoundManager.DialogueCategories.BatutaRejection);
+                }
+                else if (option == OptionType.Tickets){
+                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsTicketsNo, SoundManager.DialogueCategories.BatutaRejection);
+                }
+                else{
+                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsAllNo, SoundManager.DialogueCategories.BatutaRejection);
+                }
             }
 
             if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported()))
