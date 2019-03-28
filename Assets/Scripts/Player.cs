@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,16 +13,38 @@ public class Player : MonoBehaviour
     public int currentLane = 2;
 
     private Rigidbody2D rb;
+    public Animator animator;
     public SwipeController swipeController;
-    private SpriteRenderer sr;
+    public SpriteRenderer[] spriteRenderers;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
         SoundManager.Instance.RegisterDialogueAudioSource(GetComponent<AudioSource>());
+
+        StartLevelRoutine();
+    }
+
+    private void StartLevelRoutine()
+    {
         SoundManager.Instance.PlayLevelMusic();
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
+
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 2: // level 1
+                SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 0);
+                break; 
+            case 3: // level 2
+                SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 1);
+                break;
+            case 4: // level 3
+                SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 2);
+                break;
+            default:
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -65,9 +88,9 @@ public class Player : MonoBehaviour
         if (hazardDriver != null)
             hazardDriver.StartDriving();
 
-        if (collision.CompareTag("LevelEndZone"))
-        {
+        if (collision.CompareTag("LevelEndZone")){
             GameManager.Instance.LevelEnded();
+
         }
     }
 
@@ -95,16 +118,34 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.zero;
             GameManager.Instance.ActorsMovable = false;
 
-            if (GameManager.Instance.HitByHazard(collision.gameObject.GetComponent<Hazard>().Cost)){
+            if (GameManager.Instance.HitByHazard(hazard)){
                 StartFlickering();
                 Destroy(collision.gameObject);
+                switch (hazard.HazardType)
+                {
+                    case HazardType.CopsBarricade:
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardPolice);
+                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashPolice);
+                        break;
+                    case HazardType.Driver:
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardLamed);
+                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashLamed);
+                        break;
+                    case HazardType.Hole:
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardHole);
+                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashHole);
+                        break;
+                    default:
+                        break;
+                }
+                animator.SetTrigger("HitByHazard");
             }
             else
-                sr.enabled = false;
+            {
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverMoney);
+                SROff();
+            }
 
-            //TODO: play relevant sound
-            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashHole);
-            
         }
     }
 
@@ -121,17 +162,19 @@ public class Player : MonoBehaviour
 
     private void SROff()
     {
-        sr.enabled = false;
+        foreach (SpriteRenderer spriteRenderer in spriteRenderers){
+            spriteRenderer.enabled = false;
+        }
+
     }
 
     private void SROn(){
-        sr.enabled = true;
+        foreach (SpriteRenderer spriteRenderer in spriteRenderers){
+            spriteRenderer.enabled = true;
+        }
     }
 
-    private void MakeMovable()
-    {
+    private void MakeMovable(){
         GameManager.Instance.ActorsMovable = true;
     }
-
-
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class MainCameraLogic : MonoBehaviour
 {
     public Transform target;
     public float smoothSpeed = 20.0f;
@@ -10,6 +10,8 @@ public class Camera : MonoBehaviour
     private BoxCollider2D cameraBox;
 
     private GameObject levelEnd;
+
+    public ParticleSystem[] particleSystems;
 
     private void Start()
     {
@@ -28,5 +30,12 @@ public class Camera : MonoBehaviour
         }
 
         transform.position = new Vector3(targetPositionX, targetPositionY, targetPositionZ);
+    }
+
+    public void StartParticles()
+    {
+        foreach (ParticleSystem ps in particleSystems){
+            ps.Play();
+        }
     }
 }

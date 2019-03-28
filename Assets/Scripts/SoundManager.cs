@@ -50,14 +50,21 @@ public class SoundManager : MonoBehaviour
             Debug.Log(String.Format("GettingLevelMusic for {0}", SceneManager.GetActiveScene().buildIndex));
             switch (SceneManager.GetActiveScene().buildIndex)
             {
-                case 0:
-                   currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Yalda");
+                case 0: //title screen
+                    currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Yalda");
                     StartBackgroundMusic();
                     return;
-                    //TODO: return this when finding some better soundtrack
-                case 1:
-                   currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
-                    StartBackgroundMusic();
+                case 1: //tutorial
+                   //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
+                    //StartBackgroundMusic();
+                    return;
+                case 2: //level 1
+                    //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
+                    //StartBackgroundMusic();
+                    return;
+                case 3: //level 2
+                    //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
+                    //StartBackgroundMusic();
                     return;
                 default:
                    currentSoundEffectsAudioSource.clip = null;
@@ -89,12 +96,12 @@ public class SoundManager : MonoBehaviour
 
     public void LowerMusicVolume()
     {
-       currentSoundEffectsAudioSource.volume = 0.05f;
+       currentSoundEffectsAudioSource.volume = 0.1f;
     }
 
     public void DrivingMusicVolume()
     {
-       currentSoundEffectsAudioSource.volume = 0.1f;
+       currentSoundEffectsAudioSource.volume = 0.5f;
     }
 
     #region SoundEffects
@@ -108,7 +115,8 @@ public class SoundManager : MonoBehaviour
         crashLamed,
         flash,
         siren,
-        stop
+        stop,
+        endOfLevel
     }
 
     private Dictionary<SoundEffect, AudioClip> soundEffects;
@@ -136,7 +144,7 @@ public class SoundManager : MonoBehaviour
         BatutaGameOverPolice,
         BatutaHazardHole,
         BatutaHazardLamed,
-        BatutaHazrdPaparazzi,
+        BatutaHazardPaparazzi,
         BatutaHazardPolice,
         BatutaHot,
         BatutaLevelStart,
@@ -174,7 +182,14 @@ public class SoundManager : MonoBehaviour
     }
 
     public void PlayRandomDialogue(DialogueCategories dialogueCategory){
+        currentDialogueAudioSource.Stop();
         currentDialogueAudioSource.PlayOneShot(dialogues[dialogueCategory][Random.Range(0, dialogues[dialogueCategory].Count-1)]);
+    }
+
+    public void PlaySpecificDialogue(DialogueCategories dialogueCategory, int dialogueIndex)
+    {
+        currentDialogueAudioSource.Stop();
+        currentDialogueAudioSource.PlayOneShot(dialogues[dialogueCategory][dialogueIndex]);
     }
 
     #endregion

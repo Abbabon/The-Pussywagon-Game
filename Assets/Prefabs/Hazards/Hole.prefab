@@ -94,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e06cdbf44cd84bddbb67ebfeb17e29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cost: 100
   Lane: 2
+  HazardType: 2
 --- !u!61 &7792393276989490735
 BoxCollider2D:
   m_ObjectHideFlags: 0
