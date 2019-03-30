@@ -213,7 +213,7 @@ MonoBehaviour:
     m_Bits: 1
   ignoreChildNames: []
   sortMethod: 1
-  isAnimated: 0
+  isAnimated: 1
   useExportedFrame: 0
   customFrameName: 
   generatesOnStart: 0

@@ -306,6 +306,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1856706304771670188, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706304771670188, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: prewarm
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706304771670188, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706304771670188, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706304771670188, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: prewarm
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856706305346471267, guid: a5a744f123cfb1c4393e4bdf40c0b6e9,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5a744f123cfb1c4393e4bdf40c0b6e9, type: 3}
 --- !u!4 &6463361260499155266 stripped

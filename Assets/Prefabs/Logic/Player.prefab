@@ -145,6 +145,7 @@ MonoBehaviour:
   - {fileID: 8811400718432054462}
   - {fileID: 3479145192792252466}
   - {fileID: 879884813035971091}
+  moneyParticles: {fileID: 7877316570067872459}
 --- !u!82 &2015552798
 AudioSource:
   m_ObjectHideFlags: 0
@@ -358,6 +359,12 @@ Animator:
 --- !u!212 &879884813035971091 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 879884812954164176, guid: 75da9b5f9546c72469f4243b01f05e86,
+    type: 3}
+  m_PrefabInstance: {fileID: 186776003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7877316570067872459 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7877316570183127816, guid: 75da9b5f9546c72469f4243b01f05e86,
     type: 3}
   m_PrefabInstance: {fileID: 186776003}
   m_PrefabAsset: {fileID: 0}

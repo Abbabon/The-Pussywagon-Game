@@ -33,7 +33,7 @@ public class UIHandler : MonoBehaviour
     public void EscapeDialogue()
     {
         SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaBye);
-        GameManager.Instance.CloseDialogue();
+        StartCoroutine(GameManager.Instance.CloseDialogue(GameManager.DialogueResult.escape));
     }
 
     public void PauseMovement()

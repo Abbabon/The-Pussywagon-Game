@@ -61,16 +61,16 @@ public class SoundManager : MonoBehaviour
                     StartBackgroundMusic();
                     return;
                 case 1: //tutorial
-                   //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
-                    //StartBackgroundMusic();
+                    currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Turkish2");
+                    StartBackgroundMusic();
                     return;
                 case 2: //level 1
-                    //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
-                    //StartBackgroundMusic();
+                    currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Turkish");
+                    StartBackgroundMusic();
                     return;
                 case 3: //level 2
-                    //currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Beitar");
-                    //StartBackgroundMusic();
+                    currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Middle");
+                    StartBackgroundMusic();
                     return;
                 default:
                    currentSoundEffectsAudioSource.clip = null;
@@ -93,6 +93,11 @@ public class SoundManager : MonoBehaviour
     public void StartBackgroundMusic()
     {
        currentSoundEffectsAudioSource.Play();
+    }
+
+    public void StopLevelMusic()
+    {
+        currentSoundEffectsAudioSource.clip = null;
     }
 
     public void StopBackgroundMusic()

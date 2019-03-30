@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public SwipeController swipeController;
     public SpriteRenderer[] spriteRenderers;
 
+    public ParticleSystem moneyParticles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -147,6 +149,11 @@ public class Player : MonoBehaviour
             }
 
         }
+    }
+
+    public void StartMoneyParticles()
+    {
+        moneyParticles.Play();
     }
 
     private readonly float interval = 0.25f;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -63,6 +64,8 @@ public class GameManager : MonoBehaviour
     private GameObject uiCanvas;
     private GameObject pauseButton;
     private GameObject dialogueCanvas;
+    private PlayableDirector dialoguePanelDirector;
+    private Animator babeImageAnimator;
     private GameObject endOfLevelCanvas;
     private GameObject endOfLevelHotnessCounter;
     private GameObject gameOverCanvas;
@@ -146,6 +149,14 @@ public class GameManager : MonoBehaviour
             dialogueCanvas = GameObject.Find("DialogueCanvas");
             if (dialogueCanvas != null)
                 dialogueCanvas.GetComponent<Canvas>().enabled = false;
+        
+            GameObject dialoguePanel = GameObject.Find("DialoguePanel");
+            if (dialoguePanel != null)
+                dialoguePanelDirector = dialoguePanel.GetComponent<PlayableDirector>();
+
+            GameObject babeImage = GameObject.Find("BabeImage");
+            if (babeImage != null)
+                babeImageAnimator = babeImage.GetComponent<Animator>();
 
             GameObject paparazziCanvas = GameObject.Find("PaparazziCanvas");
             if (paparazziCanvas != null)
@@ -273,6 +284,7 @@ public class GameManager : MonoBehaviour
             dialogueHotnessCounter.GetComponent<TextMeshProUGUI>().text = babe.hotness.ToString();
 
             dialogueCanvas.GetComponent<Canvas>().enabled = true;
+            dialoguePanelDirector.Play();
 
             Player.StartInteracting();
         }
@@ -293,6 +305,7 @@ public class GameManager : MonoBehaviour
         }
         else //ok it's just a babe
         {
+            DialogueResult result;
             //does the babe accept the option?
             if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived())){
                 Debug.Log("Chose Correctly!");
@@ -314,6 +327,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 currentBabe.gameObject.SetActive(false);
+                result = DialogueResult.accept;
             }
             else{
                 Debug.Log("DENIED");
@@ -335,19 +349,19 @@ public class GameManager : MonoBehaviour
                 else{
                     SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsAllNo, SoundManager.DialogueCategories.BatutaRejection);
                 }
+                result = DialogueResult.decline;
             }
 
-            if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported()))
-            {
+            if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported())){
                 CallThePopo();
             }
 
             cash -= optionCosts[option];
-
+            Player.StartMoneyParticles();
             SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
 
             //TODO: play money animation!
-            CloseDialogue();
+            StartCoroutine(CloseDialogue(result));
         }
     }
 
@@ -376,8 +390,41 @@ public class GameManager : MonoBehaviour
         UpdateCopsGUI();
     }
 
-    public void CloseDialogue()
+
+
+    public enum DialogueResult
     {
+        accept,
+        decline,
+        timeout,
+        escape
+    }
+
+    public IEnumerator CloseDialogue(DialogueResult result)
+    {
+        switch (result)
+        {
+            case DialogueResult.accept:
+                babeImageAnimator.SetTrigger("BabeAccept");
+                yield return new WaitForSeconds(1.0f);
+                break;
+            case DialogueResult.decline:
+                babeImageAnimator.SetTrigger("BabeReject");
+                yield return new WaitForSeconds(1.0f);
+                break;
+            case DialogueResult.timeout:
+                babeImageAnimator.SetTrigger("BabeReject");
+                yield return new WaitForSeconds(1.0f);
+                break;
+            case DialogueResult.escape:
+                yield return new WaitForSeconds(0.0f);
+                break;
+            default:
+                break;
+        }
+
+        dialoguePanelDirector.Stop();
+
         Player.StopInteracting();
         SoundManager.Instance.DrivingMusicVolume();
         currentBabe.MarkInteracted();
@@ -390,7 +437,7 @@ public class GameManager : MonoBehaviour
     public void TimerRanOut()
     {
         //TODO: play sound of babe walking away
-        CloseDialogue();
+        StartCoroutine(CloseDialogue(DialogueResult.timeout));
     }
 
     private void UpdateCashGUI()
@@ -418,6 +465,7 @@ public class GameManager : MonoBehaviour
     {
         cash -= hazrd.Cost();
         UpdateCashGUI();
+        Player.StartMoneyParticles();
 
         //GAME OVER
         if (cash < 0){
@@ -466,6 +514,7 @@ public class GameManager : MonoBehaviour
             endOfLevelHotnessCounter.GetComponent<TextMeshProUGUI>().text = Extentions.Reverse(hotnessGathered.ToString());
 
         SoundManager.Instance.StopBackgroundMusic();
+        SoundManager.Instance.StopLevelMusic();
         SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.endOfLevel);
     }
 
