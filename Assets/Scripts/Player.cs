@@ -31,17 +31,23 @@ public class Player : MonoBehaviour
     private void StartLevelRoutine()
     {
         SoundManager.Instance.PlayLevelMusic();
-        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
 
         switch (SceneManager.GetActiveScene().buildIndex)
         {
+            case 1: // tutorial
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
+                SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaRegular, 0);
+                break;
             case 2: // level 1
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
                 SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 0);
                 break; 
             case 3: // level 2
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
                 SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 1);
                 break;
             case 4: // level 3
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.carStart);
                 SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.BatutaLevelStart, 2);
                 break;
             default:

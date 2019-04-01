@@ -406,7 +406,7 @@ public class GameManager : MonoBehaviour
         {
             case DialogueResult.accept:
                 babeImageAnimator.SetTrigger("BabeAccept");
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(2f);
                 break;
             case DialogueResult.decline:
                 babeImageAnimator.SetTrigger("BabeReject");
