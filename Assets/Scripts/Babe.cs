@@ -6,6 +6,7 @@ public class Babe : MonoBehaviour
 {
     private bool isInteractable = false;
     private bool interacted = false;
+    public bool Interacted { get => interacted; set => interacted = value; }
     public int Lane = 1;
     public BabeType babeType;
     public int hotness = 5;
@@ -13,9 +14,10 @@ public class Babe : MonoBehaviour
     [SerializeField]
     private SpriteRenderer outglowSR;
 
+
     public void EnableInteration()
     {
-        if (!interacted)
+        if (!Interacted)
             isInteractable = outglowSR.enabled = true;
     }
 
@@ -26,13 +28,18 @@ public class Babe : MonoBehaviour
 
     public void MarkInteracted()
     {
-        interacted = true;
+        Interacted = true;
         outglowSR.enabled = false;
     }
 
     private void OnMouseDown()
     {
-        if (isInteractable && !interacted)
+        Interact();
+    }
+
+    public void Interact()
+    {
+        if (isInteractable && !Interacted)
             GameManager.Instance.StartDialogue(this);
     }
 }

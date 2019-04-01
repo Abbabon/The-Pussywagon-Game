@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Lane: 3
-  babeType: 1
-  hotness: 5
+  babeType: 2
+  hotness: 9
   outglowSR: {fileID: 2402851161064572215}
 --- !u!1 &2977406579423318202
 GameObject:

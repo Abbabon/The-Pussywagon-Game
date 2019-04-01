@@ -12,6 +12,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: Driver2
       objectReference: {fileID: 0}
+    - target: {fileID: 1183628072580950184, guid: 64b47836a2a2e9148921fcb7379a7309,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 18616257415ed8a44a1814c0a9d168e2,
+        type: 3}
+    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.4940002
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 4500346506524894164, guid: 64b47836a2a2e9148921fcb7379a7309,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,38 +93,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5232531859040279070, guid: 64b47836a2a2e9148921fcb7379a7309,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 18616257415ed8a44a1814c0a9d168e2,
-        type: 3}
-    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.4940002
-      objectReference: {fileID: 0}
-    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
-        type: 3}
-      propertyPath: m_Offset.x
-      value: -0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 2832941516592182668, guid: 64b47836a2a2e9148921fcb7379a7309,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: -0.66
-      objectReference: {fileID: 0}
     - target: {fileID: 6007804728395042321, guid: 64b47836a2a2e9148921fcb7379a7309,
         type: 3}
       propertyPath: rb
       value: 
       objectReference: {fileID: 9141536913083696836}
-    - target: {fileID: 1183628072580950184, guid: 64b47836a2a2e9148921fcb7379a7309,
+    - target: {fileID: 5232531859040279070, guid: 64b47836a2a2e9148921fcb7379a7309,
         type: 3}
       propertyPath: m_Sprite
       value: 

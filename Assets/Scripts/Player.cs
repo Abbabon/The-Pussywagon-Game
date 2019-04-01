@@ -73,6 +73,9 @@ public class Player : MonoBehaviour
                 transform.position = new Vector2(transform.position.x, transform.position.y - landHeight);
                 currentLane--;
             }
+            else if (currentBabe != null && Input.GetKeyDown(KeyCode.F)){
+                currentBabe.Interact();
+            }
         }
         else
         {
@@ -102,58 +105,72 @@ public class Player : MonoBehaviour
         }
     }
 
+    Babe currentBabe;
     private void OnTriggerExit2D(Collider2D collision)
     {
         Babe babe = collision.gameObject.GetComponent<Babe>();
         if (babe != null)
+        {
             babe.DisableInteration();
+            currentBabe = null;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Babe babe = collision.gameObject.GetComponent<Babe>();
-        if (babe != null && babe.Lane == currentLane)
-            babe.EnableInteration();
-        else if (babe != null)
-            babe.DisableInteration();
-
-        Hazard hazard = collision.gameObject.GetComponent<Hazard>();
-        if (hazard != null)
+        if (GameManager.Instance.ActorsMovable)
         {
-            if (hazard.Lane != currentLane)
-                return;
-
-            rb.velocity = Vector2.zero;
-            GameManager.Instance.ActorsMovable = false;
-
-            if (GameManager.Instance.HitByHazard(hazard)){
-                StartFlickering();
-                Destroy(collision.gameObject);
-                switch (hazard.HazardType)
-                {
-                    case HazardType.CopsBarricade:
-                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardPolice);
-                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashPolice);
-                        break;
-                    case HazardType.Driver:
-                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardLamed);
-                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashLamed);
-                        break;
-                    case HazardType.Hole:
-                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardHole);
-                        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashHole);
-                        break;
-                    default:
-                        break;
-                }
-                animator.SetTrigger("HitByHazard");
-            }
-            else
+            Babe babe = collision.gameObject.GetComponent<Babe>();
+            if (babe != null && babe.Lane == currentLane)
             {
-                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverMoney);
-                SROff();
+                babe.EnableInteration();
+                currentBabe = babe;
+            }
+            else if (babe != null)
+            {
+                babe.DisableInteration();
+                currentBabe = null;
             }
 
+            Hazard hazard = collision.gameObject.GetComponent<Hazard>();
+            if (hazard != null)
+            {
+                if (hazard.Lane != currentLane)
+                    return;
+
+                rb.velocity = Vector2.zero;
+                GameManager.Instance.ActorsMovable = false;
+
+                if (GameManager.Instance.HitByHazard(hazard))
+                {
+                    StartFlickering();
+                    Destroy(collision.gameObject);
+                    switch (hazard.HazardType)
+                    {
+                        case HazardType.CopsBarricade:
+                            SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardPolice);
+                            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashPolice);
+                            break;
+                        case HazardType.Driver:
+                            SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardLamed);
+                            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashLamed);
+                            break;
+                        case HazardType.Hole:
+                            SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHazardHole);
+                            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.crashHole);
+                            break;
+                        default:
+                            break;
+                    }
+                    animator.SetTrigger("HitByHazard");
+                }
+                else
+                {
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverMoney);
+                    GameManager.Instance.ActorsMovable = false;
+                    SROff();
+                }
+            }
         }
     }
 

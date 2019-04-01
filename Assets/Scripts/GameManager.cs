@@ -218,10 +218,10 @@ public class GameManager : MonoBehaviour
                     cash = 15000;
                     break;
                 case 3: //Level 2
-                    cash = 15000;
+                    cash = 10000;
                     break;
                 case 4: //Level 3
-                    cash = 15000;
+                    cash = 7500;
                     break;
                 default:
                     break;
@@ -295,73 +295,91 @@ public class GameManager : MonoBehaviour
     {
         dialogueTimer.Stop();
 
-        //handle hidden cops!
-        if (currentBabe.babeType == BabeType.Cop){
-            uiCanvas.GetComponent<Canvas>().enabled = false;
-            dialogueCanvas.GetComponent<Canvas>().enabled = false;
-            copsCanvas.GetComponent<Canvas>().enabled = true;
+        if (!currentBabe.Interacted) { //prevent double option choosing
+            //handle hidden cops!
+            if (currentBabe.babeType == BabeType.Cop)
+            {
+                uiCanvas.GetComponent<Canvas>().enabled = false;
+                dialogueCanvas.GetComponent<Canvas>().enabled = false;
+                copsCanvas.GetComponent<Canvas>().enabled = true;
 
-            SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverPolice);
-        }
-        else //ok it's just a babe
-        {
-            DialogueResult result;
-            //does the babe accept the option?
-            if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived())){
-                Debug.Log("Chose Correctly!");
-
-                babesGathered += 1;
-                hotnessGathered += currentBabe.hotness;
-
-                if (option == OptionType.Dog){
-                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsDogYes);
-                }
-                else if (option == OptionType.Tickets){
-                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsTicketsYes);
-                }
-                else if (currentBabe.babeType == BabeType.Young){
-                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsYoungYes);
-                }
-                else{
-                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsAllYes);
-                }
-
-                currentBabe.gameObject.SetActive(false);
-                result = DialogueResult.accept;
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverPolice);
             }
-            else{
-                Debug.Log("DENIED");
+            else //ok it's just a babe
+            {
+                DialogueResult result;
+                //does the babe accept the option?
+                if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived()))
+                {
+                    Debug.Log("Chose Correctly!");
 
-                if (SceneManager.GetActiveScene().buildIndex == 3){ //jerusalem level
-                    if (option == OptionType.Compliment){
-                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemComplimentNo, SoundManager.DialogueCategories.BatutaRejection);
+                    babesGathered += 1;
+                    hotnessGathered += currentBabe.hotness;
+
+                    if (option == OptionType.Dog)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsDogYes);
                     }
-                    else{
-                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemNo, SoundManager.DialogueCategories.BatutaRejection);
+                    else if (option == OptionType.Tickets)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsTicketsYes);
                     }
+                    else if (currentBabe.babeType == BabeType.Young)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsYoungYes);
+                    }
+                    else
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsAllYes);
+                    }
+
+                    currentBabe.gameObject.SetActive(false);
+                    result = DialogueResult.accept;
                 }
-                else if (option == OptionType.FakeBrand){
-                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsBagNo, SoundManager.DialogueCategories.BatutaRejection);
+                else
+                {
+                    Debug.Log("DENIED");
+
+                    if (SceneManager.GetActiveScene().buildIndex == 3)
+                    { //jerusalem level
+                        if (option == OptionType.Compliment)
+                        {
+                            SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemComplimentNo, SoundManager.DialogueCategories.BatutaRejection);
+                        }
+                        else
+                        {
+                            SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemNo, SoundManager.DialogueCategories.BatutaRejection);
+                        }
+                    }
+                    else if (option == OptionType.FakeBrand)
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsBagNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    else if (option == OptionType.Tickets)
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsTicketsNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    else
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsAllNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    result = DialogueResult.decline;
                 }
-                else if (option == OptionType.Tickets){
-                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsTicketsNo, SoundManager.DialogueCategories.BatutaRejection);
+
+                if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported()))
+                {
+                    CallThePopo();
                 }
-                else{
-                    SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsAllNo, SoundManager.DialogueCategories.BatutaRejection);
-                }
-                result = DialogueResult.decline;
+
+                cash -= optionCosts[option];
+                Player.StartMoneyParticles();
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
+
+                //TODO: play money animation!
+                StartCoroutine(CloseDialogue(result));
             }
 
-            if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported())){
-                CallThePopo();
-            }
-
-            cash -= optionCosts[option];
-            Player.StartMoneyParticles();
-            SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
-
-            //TODO: play money animation!
-            StartCoroutine(CloseDialogue(result));
+            currentBabe.MarkInteracted();
         }
     }
 
@@ -427,7 +445,6 @@ public class GameManager : MonoBehaviour
 
         Player.StopInteracting();
         SoundManager.Instance.DrivingMusicVolume();
-        currentBabe.MarkInteracted();
         UpdateBabesGUI();
         UpdateCashGUI();
         UpdateCopsGUI();
@@ -463,19 +480,27 @@ public class GameManager : MonoBehaviour
 
     public bool HitByHazard(Hazard hazrd)
     {
-        cash -= hazrd.Cost();
-        UpdateCashGUI();
-        Player.StartMoneyParticles();
+        if (cash >= 0)
+        {
+            cash -= hazrd.Cost();
+            UpdateCashGUI();
+            Player.StartMoneyParticles();
 
-        //GAME OVER
-        if (cash < 0){
-            Debug.Log("GameOver!");
-            uiCanvas.GetComponent<Canvas>().enabled = false;
-            gameOverCanvas.GetComponent<Canvas>().enabled = true;
-            SoundManager.Instance.LowerMusicVolume();
+            //GAME OVER
+            if (cash < 0)
+            {
+                Debug.Log("GameOver!");
+                uiCanvas.GetComponent<Canvas>().enabled = false;
+                gameOverCanvas.GetComponent<Canvas>().enabled = true;
+                SoundManager.Instance.LowerMusicVolume();
+                return false;
+            }
+            return true;
+        }
+        else{
             return false;
         }
-        return true;
+
     }
 
     public CanvasGroup paparaziFlash;
