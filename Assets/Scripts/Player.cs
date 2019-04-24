@@ -103,6 +103,10 @@ public class Player : MonoBehaviour
             GameManager.Instance.LevelEnded();
 
         }
+
+        Money money = collision.gameObject.GetComponent<Money>();
+        if (money != null && (transform.position.y > money.transform.position.y))
+            GameManager.Instance.CollectedMoney(money);
     }
 
     Babe currentBabe;

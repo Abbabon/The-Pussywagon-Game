@@ -212,16 +212,10 @@ public class GameManager : MonoBehaviour
                     if (pauseButton != null){
                         pauseButton.SetActive(false);
                     }
-                    cash = 600;
+                    cash = 200;
                     break;
                 case 2: //Level 1
-                    cash = 15000;
-                    break;
-                case 3: //Level 2
-                    cash = 10000;
-                    break;
-                case 4: //Level 3
-                    cash = 7500;
+                    cash = 0;
                     break;
                 default:
                     break;
@@ -372,6 +366,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 cash -= optionCosts[option];
+                UpdateCashGUI();
                 Player.StartMoneyParticles();
                 SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
 
@@ -526,6 +521,18 @@ public class GameManager : MonoBehaviour
                 lowerFlash = false;
             }
         }
+    }
+
+    #endregion
+
+    #region Collectables
+
+    public void CollectedMoney(Money money)
+    {
+        cash += money.Value;
+        UpdateCashGUI();
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
+        Destroy(money.gameObject);
     }
 
     #endregion
