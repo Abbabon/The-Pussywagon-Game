@@ -21,7 +21,6 @@ MonoBehaviour:
     PointSize: 100
     Scale: 1
     CharacterCount: 58
-    LineHeight: 120.375
     Baseline: 0
     Ascender: 91.8125
     CapHeight: 0
