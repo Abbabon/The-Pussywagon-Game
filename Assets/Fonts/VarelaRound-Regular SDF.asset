@@ -19,7 +19,7 @@ MonoBehaviour:
   m_fontInfo:
     Name: Varela Round
     PointSize: 101
-    Scale: 0
+    Scale: 1
     CharacterCount: 57
     LineHeight: 121.625
     Baseline: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
     UnderlineThickness: 5.05
     strikethrough: 23.204546
     strikethroughThickness: 5.05
-    TabWidth: 0
+    TabWidth: 252.5
     Padding: 5
     AtlasWidth: 512
     AtlasHeight: 512
