@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
     private int cops;
     public int Cops { get => cops; set => cops = value; }
 
-    public float SpeedFactor = 1.0f;
-    public float SpeedFactorIncrement = 0.65f;
+    internal float SpeedFactor = 1.0f;
+    internal float SpeedFactorIncrement = 0.5f;
 
     private int cash;
     public int Cash { get => cash; set => cash = value; }

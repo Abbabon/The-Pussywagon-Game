@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818b412a00b164dd3b3ed73d0ea18e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedFactor: 1
-  SpeedFactorIncrement: 0.3
+  SpeedFactor: 0.0125
+  SpeedFactorIncrement: 0.025
   currentBabe: {fileID: 0}
   paparaziFlash: {fileID: 0}
   flashDuration: 3

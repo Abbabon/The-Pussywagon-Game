@@ -8,10 +8,10 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
 
-    public float horizontalVelocity = 50f;
-    public float laneHeight = 0.65f;
-    public int numberOfLanes = 2;
-    public int currentLane = 2;
+    internal float horizontalVelocity = 1.8f;
+    internal float laneHeight = 0.75f;
+    internal int numberOfLanes = 3;
+    internal int currentLane = 2;
 
     private Rigidbody2D rb;
     public Animator animator;
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
         {
 
             // handle horizontal movement
-            rb.velocity = new Vector2((horizontalVelocity * GameManager.Instance.SpeedFactor * Time.deltaTime), rb.velocity.y);
+            rb.velocity = new Vector2((horizontalVelocity * GameManager.Instance.SpeedFactor), rb.velocity.y);
 
             // handle vertical movement
             if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow)) && (currentLane < numberOfLanes))
