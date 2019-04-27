@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalVelocity: 100
-  landHeight: 0.8
+  laneHeight: 0.75
   numberOfLanes: 3
   currentLane: 2
   animator: {fileID: 4690531130127021106}
@@ -309,21 +309,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5678920849570194116, guid: 75da9b5f9546c72469f4243b01f05e86,
+    - target: {fileID: 7877316570183127816, guid: 75da9b5f9546c72469f4243b01f05e86,
         type: 3}
-      propertyPath: m_Distance
-      value: 0.005
-      objectReference: {fileID: 0}
-    - target: {fileID: 1402516101617695073, guid: 75da9b5f9546c72469f4243b01f05e86,
-        type: 3}
-      propertyPath: m_Distance
-      value: 1.3420832
-      objectReference: {fileID: 0}
-    - target: {fileID: 1402516101617695073, guid: 75da9b5f9546c72469f4243b01f05e86,
-        type: 3}
-      propertyPath: m_ConnectedRigidBody
+      propertyPath: CollisionModule.plane0
       value: 
-      objectReference: {fileID: 5815865064837737110}
+      objectReference: {fileID: 5708302555659550035}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75da9b5f9546c72469f4243b01f05e86, type: 3}
 --- !u!4 &2799216189308775158 stripped
@@ -365,6 +355,12 @@ SpriteRenderer:
 --- !u!198 &7877316570067872459 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7877316570183127816, guid: 75da9b5f9546c72469f4243b01f05e86,
+    type: 3}
+  m_PrefabInstance: {fileID: 186776003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5708302555659550035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5708302555846231184, guid: 75da9b5f9546c72469f4243b01f05e86,
     type: 3}
   m_PrefabInstance: {fileID: 186776003}
   m_PrefabAsset: {fileID: 0}

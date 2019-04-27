@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
 
     public float horizontalVelocity = 50f;
-    public float landHeight = 0.5f;
+    public float laneHeight = 0.65f;
     public int numberOfLanes = 2;
     public int currentLane = 2;
 
@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    Tween currentLaneMovementTween;
     // Update is called once per frame
     void Update()
     {
@@ -69,17 +70,19 @@ public class Player : MonoBehaviour
             // handle vertical movement
             if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow)) && (currentLane < numberOfLanes))
             {
-                //transform.Translate(new Vector2(0, landHeight));
-                //transform.position = new Vector2(transform.position.x, transform.position.y + landHeight);
-                transform.DOMoveY(transform.position.y + landHeight, 0.25f);
-                currentLane++;
+                if (currentLaneMovementTween == null || !currentLaneMovementTween.active)
+                {
+                    currentLaneMovementTween = transform.DOMoveY(transform.position.y + laneHeight, 0.15f);
+                    currentLane++;
+                }
             }
             else if ((swipeController.SwipeDown || Input.GetKeyDown(KeyCode.DownArrow)) && (currentLane > 1))
             {
-                //transform.Translate(new Vector2(0, -landHeight));
-                //transform.position = new Vector2(transform.position.x, transform.position.y - landHeight);
-                transform.DOMoveY(transform.position.y - landHeight, 0.25f);
-                currentLane--;
+                if (currentLaneMovementTween == null || !currentLaneMovementTween.active)
+                {
+                    currentLaneMovementTween = transform.DOMoveY(transform.position.y - laneHeight, 0.15f);
+                    currentLane--;
+                }
             }
             else if (currentBabe != null && Input.GetKeyDown(KeyCode.F)){
                 currentBabe.Interact();
