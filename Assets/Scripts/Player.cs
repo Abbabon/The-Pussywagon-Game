@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -61,16 +62,23 @@ public class Player : MonoBehaviour
         //TODO: remove this when starting level
         if (GameManager.Instance.ActorsMovable)
         {
+
+            // handle horizontal movement
             rb.velocity = new Vector2((horizontalVelocity * GameManager.Instance.SpeedFactor * Time.deltaTime), rb.velocity.y);
 
+            // handle vertical movement
             if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow)) && (currentLane < numberOfLanes))
             {
-                transform.position = new Vector2(transform.position.x, transform.position.y + landHeight);
+                //transform.Translate(new Vector2(0, landHeight));
+                //transform.position = new Vector2(transform.position.x, transform.position.y + landHeight);
+                transform.DOMoveY(transform.position.y + landHeight, 0.25f);
                 currentLane++;
             }
             else if ((swipeController.SwipeDown || Input.GetKeyDown(KeyCode.DownArrow)) && (currentLane > 1))
             {
-                transform.position = new Vector2(transform.position.x, transform.position.y - landHeight);
+                //transform.Translate(new Vector2(0, -landHeight));
+                //transform.position = new Vector2(transform.position.x, transform.position.y - landHeight);
+                transform.DOMoveY(transform.position.y - landHeight, 0.25f);
                 currentLane--;
             }
             else if (currentBabe != null && Input.GetKeyDown(KeyCode.F)){
