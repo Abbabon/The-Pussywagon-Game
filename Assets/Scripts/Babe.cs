@@ -15,6 +15,11 @@ public class Babe : MonoBehaviour
     private SpriteRenderer outglowSR;
 
 
+    private void Start()
+    {
+        GameManager.Instance.TotalBabesInStage += 1;
+    }
+
     public void EnableInteration()
     {
         if (!Interacted)

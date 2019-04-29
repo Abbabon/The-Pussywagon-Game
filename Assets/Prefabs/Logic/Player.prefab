@@ -134,10 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15429fc6e122f480ca21b455f4e2f956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalVelocity: 100
-  laneHeight: 0.75
-  numberOfLanes: 3
-  currentLane: 2
   animator: {fileID: 4690531130127021106}
   swipeController: {fileID: 5815865064837737128}
   spriteRenderers:
@@ -145,6 +141,7 @@ MonoBehaviour:
   - {fileID: 8811400718432054462}
   - {fileID: 3479145192792252466}
   - {fileID: 879884813035971091}
+  phoneHandGameObject: {fileID: 1051537514476698640}
   moneyParticles: {fileID: 7877316570067872459}
 --- !u!82 &2015552798
 AudioSource:
@@ -349,6 +346,12 @@ Animator:
 --- !u!212 &879884813035971091 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 879884812954164176, guid: 75da9b5f9546c72469f4243b01f05e86,
+    type: 3}
+  m_PrefabInstance: {fileID: 186776003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1051537514476698640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1051537514591978963, guid: 75da9b5f9546c72469f4243b01f05e86,
     type: 3}
   m_PrefabInstance: {fileID: 186776003}
   m_PrefabAsset: {fileID: 0}

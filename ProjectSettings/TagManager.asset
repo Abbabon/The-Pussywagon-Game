@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartDrivingZone
   - LevelEndZone
+  - SlowdownZone
   layers:
   - Default
   - TransparentFX

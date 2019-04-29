@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
 
     private readonly String batutaString = "Batuta";
     private readonly String girlsString = "Girls";
+    private readonly String etcString = "Etc";
 
     // Start is called before the first frame update
     void Awake()
@@ -176,7 +177,13 @@ public class SoundManager : MonoBehaviour
         GirlsTicketsNo,
         GirlsJerusalemComplimentNo,
         GirlsJerusalemNo,
-        GirlsCop
+        GirlsCop,
+
+        EtcRingtone,
+        EtcAnswer,
+        EtcFriendHigh,
+        EtcFriendLow,
+        EtcFriendMid,
     }
 
     //TODO: try to refactor this to be more performable
@@ -191,9 +198,17 @@ public class SoundManager : MonoBehaviour
             Debug.Log(String.Format("Loading Dialogue for {0}", dialogueCategoryString));
             for (int i = 1; i < 50; i++)
             {
-                String assetPath = dialogueCategoryString.Contains(batutaString) ?
-                                    String.Format("Dialogue/{0}/{1}{2}", batutaString, dialogueCategoryString.Replace(batutaString, ""), i) :
-                                    String.Format("Dialogue/{0}/{1}{2}", girlsString, dialogueCategoryString.Replace(girlsString, ""), i);
+                String assetPath;
+                if (dialogueCategoryString.Contains(batutaString)){
+                    assetPath = String.Format("Dialogue/{0}/{1}{2}", batutaString, dialogueCategoryString.Replace(batutaString, ""), i);
+                }
+                else if (dialogueCategoryString.Contains(girlsString)){
+                    assetPath = String.Format("Dialogue/{0}/{1}{2}", girlsString, dialogueCategoryString.Replace(girlsString, ""), i);
+                }
+                else{
+                    assetPath = String.Format("Dialogue/{0}/{1}{2}", etcString, dialogueCategoryString.Replace(etcString, ""), i);
+                }
+
                 AudioClip clip = Resources.Load<AudioClip>(assetPath);
                 if (clip != null){
                     dialogues[dialogueCategory].Add(clip);

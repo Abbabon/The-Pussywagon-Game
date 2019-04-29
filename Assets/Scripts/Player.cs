@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 {
 
     internal float horizontalVelocity = 1.8f;
+    internal float defaultHorizontalVelocity = 1.8f;
+    internal float slowedHorizontalVelocity = 0.95f;
     internal float laneHeight = 0.75f;
     internal int numberOfLanes = 3;
     internal int currentLane = 2;
@@ -17,6 +19,7 @@ public class Player : MonoBehaviour
     public Animator animator;
     public SwipeController swipeController;
     public SpriteRenderer[] spriteRenderers;
+    public GameObject phoneHandGameObject;
 
     public ParticleSystem moneyParticles;
 
@@ -54,6 +57,8 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
+
+        horizontalVelocity = defaultHorizontalVelocity;
     }
 
     Tween currentLaneMovementTween;
@@ -110,14 +115,24 @@ public class Player : MonoBehaviour
         if (hazardDriver != null)
             hazardDriver.StartDriving();
 
-        if (collision.CompareTag("LevelEndZone")){
-            GameManager.Instance.LevelEnded();
-
-        }
-
         Money money = collision.gameObject.GetComponent<Money>();
         if (money != null && (transform.position.y > money.transform.position.y))
             GameManager.Instance.CollectedMoney(money);
+
+        if (collision.CompareTag("LevelEndZone")){
+            GameManager.Instance.LevelEnded();
+        }
+
+        if (collision.CompareTag("SlowdownZone")){
+            Destroy(collision.gameObject);
+            horizontalVelocity = slowedHorizontalVelocity;
+            GameManager.Instance.SpeedFactor = 1;
+            GameManager.Instance.SlowdownSequenceInitiated();
+        }
+    }
+
+    public void EnablePhoneHand(){
+        phoneHandGameObject.SetActive(true);
     }
 
     Babe currentBabe;

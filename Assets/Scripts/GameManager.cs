@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using CodeMonkey.Utils;
 using Random = UnityEngine.Random;
 
 public enum BabeType
@@ -44,6 +45,12 @@ public class GameManager : MonoBehaviour
 
     private int babesGathered;
     public int BabesGathered { get => babesGathered; set => babesGathered = value; }
+
+    private int babesGatheredInStage;
+    public int BabesGatheredInStage { get => babesGatheredInStage; set => babesGatheredInStage = value; }
+
+    private int totalBabesInStage;
+    public int TotalBabesInStage { get => totalBabesInStage; set => totalBabesInStage = value; }
 
     private int hotnessGathered;
     public int HotnessScore { get => hotnessGathered; set => hotnessGathered = value; }
@@ -256,6 +263,7 @@ public class GameManager : MonoBehaviour
         actorsMovable = true;
         cops = 0;
         SpeedFactor = 1;
+        babesGatheredInStage = 0;
         UpdateCashGUI();
         UpdateCopsGUI();
         UpdateBabesGUI();
@@ -329,6 +337,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Chose Correctly!");
 
                     babesGathered += 1;
+                    babesGatheredInStage += 1;
                     hotnessGathered += currentBabe.hotness;
 
                     if (option == OptionType.Dog)
@@ -355,7 +364,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("DENIED");
 
-                    if (SceneManager.GetActiveScene().buildIndex == 3)
+                    if (SceneManager.GetActiveScene().buildIndex == 4)
                     { //jerusalem level
                         if (option == OptionType.Compliment)
                         {
@@ -381,8 +390,7 @@ public class GameManager : MonoBehaviour
                     result = DialogueResult.decline;
                 }
 
-                if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported()))
-                {
+                if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported())){
                     CallThePopo();
                 }
 
@@ -558,6 +566,26 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    internal void SlowdownSequenceInitiated()
+    {
+        SoundManager.Instance.StopBackgroundMusic();
+
+        FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcRingtone, 0), 0.0f);
+        FunctionTimer.Create(() => Player.EnablePhoneHand(), 3.9f);
+        FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcAnswer, 0), 3.9f);
+
+        float babePercentage = (float)babesGatheredInStage / totalBabesInStage;
+        //if (babePercentage <= 0.4f){
+        //    FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendLow, 0), 5f);
+        //}
+        //else if (babePercentage <= 0.75f){
+        //    FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendMid, 0), 5f);
+        //}
+        //else{
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendHigh, 0), 5f);
+        //}
+    }
+
     public void LevelEnded()
     {
         actorsMovable = false;
@@ -569,6 +597,7 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.StopBackgroundMusic();
         SoundManager.Instance.StopLevelMusic();
         SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.endOfLevel);
+
         PlayFadeOut();
     }
 
@@ -592,6 +621,9 @@ public class GameManager : MonoBehaviour
 
     internal void NextLevel()
     {
+        //reset variables that will be added to next level
+        totalBabesInStage = 0;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
