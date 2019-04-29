@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     private GameObject endOfLevelCanvas;
     private GameObject endOfLevelHotnessCounter;
     private GameObject gameOverCanvas;
+    private GameObject fadeCanvas;
     private GameObject copsCanvas;
     private GameObject exitGameCanvas;
     private GameObject dialogueSprite;
@@ -143,8 +144,8 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.Find("Player");
 
-        // meaning after the title screen:
-        if (scene.buildIndex > 0)
+        // meaning after the title and intro screens:
+        if (scene.buildIndex > 1)
         {
             dialogueCanvas = GameObject.Find("DialogueCanvas");
             if (dialogueCanvas != null)
@@ -181,6 +182,8 @@ public class GameManager : MonoBehaviour
             if (gameOverCanvas != null)
                 gameOverCanvas.GetComponent<Canvas>().enabled = false;
 
+            fadeCanvas = GameObject.Find("Fader");
+
             copsCanvas = GameObject.Find("CopsCanvas");
             if (copsCanvas != null)
                 copsCanvas.GetComponent<Canvas>().enabled = false;
@@ -208,19 +211,37 @@ public class GameManager : MonoBehaviour
             // add money and make small changes according to each level's specifications
             switch (SceneManager.GetActiveScene().buildIndex)
             {
-                case 1: //Tutorial
+                case 2: //Tutorial
                     if (pauseButton != null){
                         pauseButton.SetActive(false);
                     }
                     cash = 200;
                     break;
-                case 2: //Level 1
+                case 3: //Level 1
                     cash = 0;
                     break;
                 default:
                     break;
             }
             ResetLevelParameters();
+            PlayFadeIn();
+        }
+    }
+
+    private void PlayFadeIn()
+    {
+        if (fadeCanvas != null){
+            Debug.Log("Fading In");
+            fadeCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
+        }
+    }
+
+    private void PlayFadeOut()
+    {
+        if (fadeCanvas != null)
+        {
+            Debug.Log("Fading Out");
+            fadeCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
         }
     }
 
@@ -548,6 +569,7 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.StopBackgroundMusic();
         SoundManager.Instance.StopLevelMusic();
         SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.endOfLevel);
+        PlayFadeOut();
     }
 
     //called only from main screen... there must be a finer way:
@@ -555,7 +577,7 @@ public class GameManager : MonoBehaviour
     {
         //TODO: fade out + sound
         FirstLevelParametersInitialization();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + (finishedTutorial ? 2 : 1));
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + (finishedTutorial ? 3 : 1));
     }
 
     internal void FinishedTutorial(){
