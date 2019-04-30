@@ -4,14 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using CodeMonkey.Utils;
+using Random = UnityEngine.Random;
 
 public enum BabeType
 {
     Hot = 0,
     Ok = 1,
-    Young = 2
+    Young = 2,
+    Cop = 3
+}
+
+public enum OptionType
+{
+    Compliment,
+    FakeBrand,
+    Tickets,
+    Dog,
+    Candy,
+    Drugs
 }
 
 public class GameManager : MonoBehaviour
@@ -23,29 +37,48 @@ public class GameManager : MonoBehaviour
     private int cops;
     public int Cops { get => cops; set => cops = value; }
 
+    internal float SpeedFactor = 1.0f;
+    internal float SpeedFactorIncrement = 0.5f;
+
     private int cash;
     public int Cash { get => cash; set => cash = value; }
 
     private int babesGathered;
     public int BabesGathered { get => babesGathered; set => babesGathered = value; }
 
+    private int babesGatheredInStage;
+    public int BabesGatheredInStage { get => babesGatheredInStage; set => babesGatheredInStage = value; }
+
+    private int totalBabesInStage;
+    public int TotalBabesInStage { get => totalBabesInStage; set => totalBabesInStage = value; }
+
     private int hotnessGathered;
     public int HotnessScore { get => hotnessGathered; set => hotnessGathered = value; }
 
-    private Dictionary<BabeType, Option[]> babeOptions;
+    private Dictionary<BabeType, OptionType[]> babeOptions;
+    public Dictionary<BabeType, OptionType[]> BabeOptions { get => babeOptions; set => babeOptions = value; }
+
+    private Dictionary<OptionType, int> optionCosts;
+    public Dictionary<OptionType, int> OptionCosts { get => optionCosts; set => optionCosts = value; }
 
     private bool actorsMovable = true;
     public bool ActorsMovable { get => actorsMovable; set => actorsMovable = value; }
 
-    private PlayerMusic playerMusic;
+    private bool finishedTutorial = false;
 
     #region GUI
 
     private GameObject uiCanvas;
+    private GameObject pauseButton;
     private GameObject dialogueCanvas;
+    private PlayableDirector dialoguePanelDirector;
+    private Animator babeImageAnimator;
     private GameObject endOfLevelCanvas;
     private GameObject endOfLevelHotnessCounter;
     private GameObject gameOverCanvas;
+    private GameObject fadeCanvas;
+    private GameObject copsCanvas;
+    private GameObject exitGameCanvas;
     private GameObject dialogueSprite;
     private GameObject dialogueHotnessCounter;
     private GameObject[] dialogueButtons;
@@ -58,12 +91,11 @@ public class GameManager : MonoBehaviour
     #endregion
 
     private GameObject player;
+    public Player Player { get => player.GetComponent<Player>(); }
 
     private void Awake()
     {
         Debug.Log("AWAKE");
-        InitializeBabeDictionary();
-        SceneManager.sceneLoaded += OnLevelFinishedLoading;
         lock (padlock)
         {
             if (_instance != null && _instance != this)
@@ -74,84 +106,101 @@ public class GameManager : MonoBehaviour
             else
             {
                 _instance = this;
+                InitializeBabeDictionaries();
+                SceneManager.sceneLoaded += OnLevelFinishedLoading;
             }
         }
-
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void Update()
+    {
+        HandleScreenFlashing();
     }
 
     private void Start()
     {
-       if (playerMusic != null){
-            playerMusic.PlayLevelMusic();
-        }
 
     }
 
-    private void InitializeBabeDictionary()
+    private void InitializeBabeDictionaries()
     {
-        babeOptions = new Dictionary<BabeType, Option[]>();
-        Option[] hotOptions = new Option[4];
-        hotOptions[0] = new Option(300, OptionType.iPhone);
-        hotOptions[1] = new Option(300, OptionType.Watch);
-        hotOptions[2] = new Option(400, OptionType.Jewlery);
-        hotOptions[3] = new Option(500, OptionType.Dog);
-        babeOptions.Add(BabeType.Hot, hotOptions);
+        babeOptions = new Dictionary<BabeType, OptionType[]>();
 
-        Option[] okOptions = new Option[4];
-        okOptions[0] = new Option(0, OptionType.Compliment);
-        okOptions[1] = new Option(50, OptionType.Chocolate);
-        okOptions[2] = new Option(100, OptionType.FakeBrand);
-        okOptions[3] = new Option(200, OptionType.Tickets);
-        babeOptions.Add(BabeType.Ok, okOptions);
+        OptionType[] hotOptions = { OptionType.Drugs, OptionType.Dog };
+        BabeOptions.Add(BabeType.Hot, hotOptions);
 
-        Option[] youngOptions = new Option[4];
-        youngOptions[0] = new Option(100, OptionType.HelloKitty);
-        youngOptions[1] = new Option(10, OptionType.CandyBracelet);
-        youngOptions[2] = new Option(5, OptionType.Candy);
-        youngOptions[3] = new Option(50, OptionType.Slime);
-        babeOptions.Add(BabeType.Young, youngOptions);
-    }
+        OptionType[] okOptions = { OptionType.Tickets, OptionType.FakeBrand, OptionType.Drugs, OptionType.Dog };
+        BabeOptions.Add(BabeType.Ok, okOptions);
 
-    public AudioClip GetLevelMusic()
-    {
-        Debug.Log(String.Format("GettingLevelMusic for {0}", SceneManager.GetActiveScene().buildIndex));
-        switch (SceneManager.GetActiveScene().buildIndex)
+        OptionType[] youngOptions = { OptionType.Tickets, OptionType.FakeBrand, OptionType.Candy, OptionType.Dog };
+        BabeOptions.Add(BabeType.Young, youngOptions);
+
+        optionCosts = new Dictionary<OptionType, int>
         {
-            case 0:
-                return Resources.Load<AudioClip>("Music/Yalda");
-            case 1:
-                return Resources.Load<AudioClip>("Music/Beitar");
-            default:
-                return null;
-        }
+            { OptionType.Compliment, 0 },
+            { OptionType.Candy, 10 },
+            { OptionType.Tickets, 300 },
+            { OptionType.FakeBrand, 400 },
+            { OptionType.Drugs, 1000 },
+            { OptionType.Dog, 4000 }
+        };
     }
 
     private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         player = GameObject.Find("Player");
-        playerMusic = player.GetComponent<PlayerMusic>();
 
-        // meaning after the title screen:
-        if (scene.buildIndex > 0)
+        // meaning after the title and intro screens:
+        if (scene.buildIndex > 1)
         {
             dialogueCanvas = GameObject.Find("DialogueCanvas");
             if (dialogueCanvas != null)
                 dialogueCanvas.GetComponent<Canvas>().enabled = false;
+        
+            GameObject dialoguePanel = GameObject.Find("DialoguePanel");
+            if (dialoguePanel != null)
+                dialoguePanelDirector = dialoguePanel.GetComponent<PlayableDirector>();
+
+            GameObject babeImage = GameObject.Find("BabeImage");
+            if (babeImage != null)
+                babeImageAnimator = babeImage.GetComponent<Animator>();
+
+            GameObject paparazziCanvas = GameObject.Find("PaparazziCanvas");
+            if (paparazziCanvas != null)
+                paparaziFlash = paparazziCanvas.GetComponent<CanvasGroup>();
 
             uiCanvas = GameObject.Find("UICanvas");
+            pauseButton = GameObject.Find("PauseButton");
 
             endOfLevelCanvas = GameObject.Find("EndOfLevelCanvas");
             if (endOfLevelCanvas != null)
                 endOfLevelCanvas.GetComponent<Canvas>().enabled = false;
+            else
+            {
+                endOfLevelCanvas = GameObject.Find("EndOfTutorialCanvas");
+                if (endOfLevelCanvas != null){
+                    endOfLevelCanvas.GetComponent<Canvas>().enabled = false;
+                }
+            }
             endOfLevelHotnessCounter = GameObject.Find("TotalHotnessCounter");
 
             gameOverCanvas = GameObject.Find("GameOverCanvas");
             if (gameOverCanvas != null)
                 gameOverCanvas.GetComponent<Canvas>().enabled = false;
 
-            dialogueButtons = new GameObject[4];
-            for (int i = 0; i < 4; i++)
+            fadeCanvas = GameObject.Find("Fader");
+
+            copsCanvas = GameObject.Find("CopsCanvas");
+            if (copsCanvas != null)
+                copsCanvas.GetComponent<Canvas>().enabled = false;
+
+            exitGameCanvas = GameObject.Find("ExitGameCanvas");
+            if (exitGameCanvas != null)
+                exitGameCanvas.GetComponent<Canvas>().enabled = false;
+
+            dialogueButtons = new GameObject[6];
+            for (int i = 0; i < 6; i++)
             {
                 dialogueButtons[i] = GameObject.Find(String.Format("DialogueButton{0}", i + 1));
             }
@@ -161,21 +210,63 @@ public class GameManager : MonoBehaviour
 
             moneyCounter = GameObject.Find("MoneyCounter");
             babesCounter = GameObject.Find("BabesCounter");
-            copsCounters = new GameObject[3];
-            for (int i = 0; i < 3; i++)
-            {
+            copsCounters = new GameObject[6];
+            for (int i = 0; i < 5; i++){
                 copsCounters[i] = GameObject.Find(String.Format("CopCounter{0}", i + 1));
             }
 
-            //TODO: add this cash in each level, and what you saved on the previous level 
-            cash = 3000;
-            cops = 0;
-            babesGathered = 0;
-            hotnessGathered = 0;
-            UpdateCashGUI();
-            UpdateCopsGUI();
-            UpdateBabesGUI();
+            // add money and make small changes according to each level's specifications
+            switch (SceneManager.GetActiveScene().buildIndex)
+            {
+                case 2: //Tutorial
+                    if (pauseButton != null){
+                        pauseButton.SetActive(false);
+                    }
+                    cash = 200;
+                    break;
+                case 3: //Level 1
+                    cash = 0;
+                    break;
+                default:
+                    break;
+            }
+            ResetLevelParameters();
+            PlayFadeIn();
         }
+    }
+
+    private void PlayFadeIn()
+    {
+        if (fadeCanvas != null){
+            Debug.Log("Fading In");
+            fadeCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
+        }
+    }
+
+    private void PlayFadeOut()
+    {
+        if (fadeCanvas != null)
+        {
+            Debug.Log("Fading Out");
+            fadeCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
+        }
+    }
+
+    public void FirstLevelParametersInitialization()
+    {
+        babesGathered = 0;
+        hotnessGathered = 0;
+    }
+
+    private void ResetLevelParameters()
+    {
+        actorsMovable = true;
+        cops = 0;
+        SpeedFactor = 1;
+        babesGatheredInStage = 0;
+        UpdateCashGUI();
+        UpdateCopsGUI();
+        UpdateBabesGUI();
     }
 
     #region BabeInteraction
@@ -184,53 +275,200 @@ public class GameManager : MonoBehaviour
 
     public void StartDialogue(Babe babe)
     {
-        //TODO: start dialogue sound:
+        if (actorsMovable)
+        {
+            switch (babe.babeType)
+            {
+                case BabeType.Hot:
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaHot);
+                    break;
+                case BabeType.Young:
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaYoung);
+                    break;
+                case BabeType.Ok:
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaRegular);
+                    break;
+                case BabeType.Cop:
+                    SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsCop);
+                    break;
+                default:
+                    break;
+            }
+            SoundManager.Instance.LowerMusicVolume();
 
-        dialogueTimer.StartTimer();
-        currentBabe = babe;
-        for (int i = 0; i < 4; i++){
-            dialogueButtons[i].GetComponent<DialogueButton>().ChangeOption(babeOptions[currentBabe.babeType][i]);
+            dialogueTimer.StartTimer();
+            currentBabe = babe;
+            List<OptionType> options = optionCosts.Keys.ToList();
+            for (int i = 0; i < 6; i++)
+            {
+                dialogueButtons[i].GetComponent<DialogueButton>().ChangeOption(options[i]);
+            }
+            dialogueSprite.GetComponent<Image>().sprite = babe.gameObject.GetComponent<SpriteRenderer>().sprite;
+            dialogueHotnessCounter.GetComponent<TextMeshProUGUI>().text = babe.hotness.ToString();
+
+            dialogueCanvas.GetComponent<Canvas>().enabled = true;
+            dialoguePanelDirector.Play();
+
+            Player.StartInteracting();
         }
-        dialogueSprite.GetComponent<Image>().sprite = babe.gameObject.GetComponent<SpriteRenderer>().sprite;
-        dialogueHotnessCounter.GetComponent<TextMeshProUGUI>().text = babe.hotness.ToString();
 
-        dialogueCanvas.GetComponent<Canvas>().enabled = true;
-
-        player.GetComponent<PlayerMovement>().StartInteracting();
-        player.GetComponent<PlayerMusic>().LowerMusicVolume();
     }
 
-    public void ChooseOption(Option option)
+    public void ChooseOption(OptionType option)
     {
         dialogueTimer.Stop();
 
-        if (currentBabe.preferredOption == option.Type)
-        {
-            Debug.Log("Chose Correctly");
+        if (!currentBabe.Interacted) { //prevent double option choosing
+            //handle hidden cops!
+            if (currentBabe.babeType == BabeType.Cop)
+            {
+                uiCanvas.GetComponent<Canvas>().enabled = false;
+                dialogueCanvas.GetComponent<Canvas>().enabled = false;
+                copsCanvas.GetComponent<Canvas>().enabled = true;
 
-            //TODO: update babes counter
-            babesGathered += 1;
-            hotnessGathered += currentBabe.hotness;
+                SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaGameOverPolice);
+            }
+            else //ok it's just a babe
+            {
+                DialogueResult result;
+                //does the babe accept the option?
+                if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived()))
+                {
+                    Debug.Log("Chose Correctly!");
 
-            //TODO: play getting on animation & sound, THEN disable the babe.
-            currentBabe.gameObject.SetActive(false);
+                    babesGathered += 1;
+                    babesGatheredInStage += 1;
+                    hotnessGathered += currentBabe.hotness;
+
+                    if (option == OptionType.Dog)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsDogYes);
+                    }
+                    else if (option == OptionType.Tickets)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsTicketsYes);
+                    }
+                    else if (currentBabe.babeType == BabeType.Young)
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsYoungYes);
+                    }
+                    else
+                    {
+                        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.GirlsAllYes);
+                    }
+
+                    currentBabe.gameObject.SetActive(false);
+                    result = DialogueResult.accept;
+                }
+                else
+                {
+                    Debug.Log("DENIED");
+
+                    if (SceneManager.GetActiveScene().buildIndex == 4)
+                    { //jerusalem level
+                        if (option == OptionType.Compliment)
+                        {
+                            SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemComplimentNo, SoundManager.DialogueCategories.BatutaRejection);
+                        }
+                        else
+                        {
+                            SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsJerusalemNo, SoundManager.DialogueCategories.BatutaRejection);
+                        }
+                    }
+                    else if (option == OptionType.FakeBrand)
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsBagNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    else if (option == OptionType.Tickets)
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsTicketsNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    else
+                    {
+                        SoundManager.Instance.PlayTwoRandomDialogues(SoundManager.DialogueCategories.GirlsAllNo, SoundManager.DialogueCategories.BatutaRejection);
+                    }
+                    result = DialogueResult.decline;
+                }
+
+                if (currentBabe.babeType == BabeType.Young || (option == OptionType.Drugs && DrugsReported())){
+                    CallThePopo();
+                }
+
+                cash -= optionCosts[option];
+                UpdateCashGUI();
+                Player.StartMoneyParticles();
+                SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
+
+                //TODO: play money animation!
+                StartCoroutine(CloseDialogue(result));
+            }
+
+            currentBabe.MarkInteracted();
         }
-        else
-        {
-            Debug.Log("DENIED");
-
-            //TODO: play the queue sound
-        }
-
-        cash -= option.Cost;
-        CloseDialogue();
     }
 
-    public void CloseDialogue()
+    private bool ComplimentReceived()
     {
-        player.GetComponent<PlayerMovement>().StopInteracting();
-        player.GetComponent<PlayerMusic>().DrivingMusicVolume();
-        currentBabe.MarkInteracted();
+        return Random.Range(0, 100) < ((currentBabe.babeType == BabeType.Young) ? 80 : 40);
+    }
+
+    private bool DrugsReported()
+    {
+        return (Random.Range(0, 100) <= 33);
+    }
+
+    public void CallThePopo()
+    {
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.siren);
+        Camera.main.gameObject.GetComponent<MainCameraLogic>().StartParticles();
+
+        if (cops < 5){
+            cops += 1;
+            SpeedFactor += SpeedFactorIncrement;
+        }
+        else{
+            Debug.Log("Max amount of cops!");
+        }
+        UpdateCopsGUI();
+    }
+
+
+
+    public enum DialogueResult
+    {
+        accept,
+        decline,
+        timeout,
+        escape
+    }
+
+    public IEnumerator CloseDialogue(DialogueResult result)
+    {
+        switch (result)
+        {
+            case DialogueResult.accept:
+                babeImageAnimator.SetTrigger("BabeAccept");
+                yield return new WaitForSeconds(2f);
+                break;
+            case DialogueResult.decline:
+                babeImageAnimator.SetTrigger("BabeReject");
+                yield return new WaitForSeconds(1.0f);
+                break;
+            case DialogueResult.timeout:
+                babeImageAnimator.SetTrigger("BabeReject");
+                yield return new WaitForSeconds(1.0f);
+                break;
+            case DialogueResult.escape:
+                yield return new WaitForSeconds(0.0f);
+                break;
+            default:
+                break;
+        }
+
+        dialoguePanelDirector.Stop();
+
+        Player.StopInteracting();
+        SoundManager.Instance.DrivingMusicVolume();
         UpdateBabesGUI();
         UpdateCashGUI();
         UpdateCopsGUI();
@@ -240,7 +478,7 @@ public class GameManager : MonoBehaviour
     public void TimerRanOut()
     {
         //TODO: play sound of babe walking away
-        CloseDialogue();
+        StartCoroutine(CloseDialogue(DialogueResult.timeout));
     }
 
     private void UpdateCashGUI()
@@ -250,8 +488,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCopsGUI()
     {
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 5; i++){
             copsCounters[i].GetComponent<Image>().sprite = Resources.Load<Sprite>((i < cops) ? "UI/police-full" : "UI/police-empty");
         }
     }
@@ -265,58 +502,165 @@ public class GameManager : MonoBehaviour
 
     #region Hazards
 
-    public bool HitByHazard(int hazardCost)
+    public bool HitByHazard(Hazard hazrd)
     {
-        cash -= hazardCost;
-        UpdateCashGUI();
-
-        //GAME OVER
-        if (cash < 0)
+        if (cash >= 0)
         {
-            Debug.Log("GameOver!");
-            uiCanvas.GetComponent<Canvas>().enabled = false;
-            gameOverCanvas.GetComponent<Canvas>().enabled = true;
+            cash -= hazrd.Cost();
+            UpdateCashGUI();
+            Player.StartMoneyParticles();
+
+            //GAME OVER
+            if (cash < 0)
+            {
+                Debug.Log("GameOver!");
+                uiCanvas.GetComponent<Canvas>().enabled = false;
+                gameOverCanvas.GetComponent<Canvas>().enabled = true;
+                SoundManager.Instance.LowerMusicVolume();
+                return false;
+            }
+            return true;
+        }
+        else{
             return false;
         }
-        return true;
+
+    }
+
+    public CanvasGroup paparaziFlash;
+    private bool lowerFlash = false;
+    public float flashDuration = 3.0f;
+    internal void Flash()
+    {
+        paparaziFlash.alpha = 1;
+        Invoke("EndFlash", flashDuration);
+    }
+
+    private void EndFlash(){
+        lowerFlash = true;
+    }
+
+    private void HandleScreenFlashing()
+    {
+        if (lowerFlash && paparaziFlash != null)
+        {
+            paparaziFlash.alpha = paparaziFlash.alpha - Time.deltaTime;
+            if (paparaziFlash.alpha <= 0){
+                paparaziFlash.alpha = 0;
+                lowerFlash = false;
+            }
+        }
     }
 
     #endregion
 
+    #region Collectables
+
+    public void CollectedMoney(Money money)
+    {
+        cash += money.Value;
+        UpdateCashGUI();
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.cash);
+        Destroy(money.gameObject);
+    }
+
+    #endregion
+
+    internal void SlowdownSequenceInitiated()
+    {
+        SoundManager.Instance.StopBackgroundMusic();
+
+        FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcRingtone, 0), 0.0f);
+        FunctionTimer.Create(() => Player.EnablePhoneHand(), 3.9f);
+        FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcAnswer, 0), 3.9f);
+
+        float babePercentage = (float)babesGatheredInStage / totalBabesInStage;
+        if (babePercentage <= 0.4f){
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendLow, 0), 5f);
+        }
+        else if (babePercentage <= 0.75f){
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendMid, 0), 5f);
+        }
+        else{
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendHigh, 0), 5f);
+        }
+    }
+
     public void LevelEnded()
     {
+        actorsMovable = false;
         uiCanvas.GetComponent<Canvas>().enabled = false;
         endOfLevelCanvas.GetComponent<Canvas>().enabled = true;
+        if (endOfLevelHotnessCounter != null) //tutorial has no such thing
+            endOfLevelHotnessCounter.GetComponent<TextMeshProUGUI>().text = Extentions.Reverse(hotnessGathered.ToString());
 
-        endOfLevelHotnessCounter.GetComponent<TextMeshProUGUI>().text = Extentions.Reverse(hotnessGathered.ToString());
+        SoundManager.Instance.StopBackgroundMusic();
+        SoundManager.Instance.StopLevelMusic();
+        SoundManager.Instance.PlaySoundEffect(SoundManager.SoundEffect.endOfLevel);
+
+        PlayFadeOut();
     }
 
     //called only from main screen... there must be a finer way:
     internal void StartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //TODO: fade out + sound
+        FirstLevelParametersInitialization();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + (finishedTutorial ? 3 : 1));
+    }
+
+    internal void FinishedTutorial(){
+        finishedTutorial = true;
+        NextLevel();
     }
 
     internal void RestartLevel()
     {
-        GameManager.Instance.ActorsMovable = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    internal void NextLevel()
+    {
+        //reset variables that will be added to next level
+        totalBabesInStage = 0;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    internal void ToMainMenu(){
+        SceneManager.LoadScene(0);
+    }
+
     bool paused = false;
-    internal void TogglePause()
+    internal void ToggleMovementPause()
     {
         if (paused)
         {
             actorsMovable = true;
-            player.GetComponent<AudioSource>().Play();
             paused = false;
         }
         //can't pause while in dialogue
         else if (actorsMovable)
         {
             actorsMovable = false;
-            player.GetComponent<AudioSource>().Pause();
+            paused = true;
+        }
+    }
+
+    internal void ToggleExitGameCanvas()
+    {
+        if (paused) //in the menu currently, and pressed cancel
+        {
+            actorsMovable = true;
+            exitGameCanvas.GetComponent<Canvas>().enabled = false;
+            SoundManager.Instance.StartBackgroundMusic();
+            paused = false;
+        }
+        else if (actorsMovable) //can't pause while in dialogue, don't enter the activation phase
+        {
+            actorsMovable = false;
+            exitGameCanvas.GetComponent<Canvas>().enabled = true;
+            SoundManager.Instance.StopBackgroundMusic();
             paused = true;
         }
     }

@@ -7,26 +7,53 @@ public class UIHandler : MonoBehaviour
 
     public void StartGame()
     {
-        //TODO: play the relevant sounds
         GameManager.Instance.StartGame();
     }
 
+    public void ToMainMenu()
+    {
+        GameManager.Instance.ToMainMenu();
+    }
 
     public void RestartLevel()
     {
-        //TODO: play the relevant sounds
         GameManager.Instance.RestartLevel();
+    }
+
+    public void FinishedTutorial()
+    {
+        GameManager.Instance.FinishedTutorial();
+    }
+
+    public void NextLevel()
+    {
+        GameManager.Instance.NextLevel();
     }
 
     public void EscapeDialogue()
     {
-        //TODO: play the relevant sounds
-        GameManager.Instance.CloseDialogue();
+        SoundManager.Instance.PlayRandomDialogue(SoundManager.DialogueCategories.BatutaBye);
+        StartCoroutine(GameManager.Instance.CloseDialogue(GameManager.DialogueResult.escape));
     }
 
-    public void PauseGame()
+    public void PauseMovement()
     {
-        GameManager.Instance.TogglePause();
+        GameManager.Instance.ToggleMovementPause();
+    }
+
+    public void Silence()
+    {
+        SoundManager.Instance.ToggleSilence();
+    }
+
+    public void ExitGameCanvas()
+    {
+        GameManager.Instance.ToggleExitGameCanvas();
+    }
+
+    public void AddCops()
+    {
+        GameManager.Instance.CallThePopo();
     }
 
 }

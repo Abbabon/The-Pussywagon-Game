@@ -19,7 +19,7 @@ MonoBehaviour:
   m_fontInfo:
     Name: Varela Round
     PointSize: 101
-    Scale: 0
+    Scale: 1
     CharacterCount: 57
     LineHeight: 121.625
     Baseline: 0
@@ -34,11 +34,11 @@ MonoBehaviour:
     UnderlineThickness: 5.05
     strikethrough: 23.204546
     strikethroughThickness: 5.05
-    TabWidth: 0
+    TabWidth: 252.5
     Padding: 5
     AtlasWidth: 512
     AtlasHeight: 512
-  atlas: {fileID: 28550495468938018}
+  atlas: {fileID: 28431319794114158}
   m_glyphInfoList:
   - id: 33
     x: 219
@@ -646,7 +646,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 28550495468938018}
+        m_Texture: {fileID: 28431319794114158}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineTex:
@@ -667,10 +667,10 @@ Material:
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
-    - _GlowInner: 0.05
-    - _GlowOffset: 0
-    - _GlowOuter: 0.05
-    - _GlowPower: 0.75
+    - _GlowInner: 1
+    - _GlowOffset: 0.04
+    - _GlowOuter: 0.36
+    - _GlowPower: 0.62
     - _GradientScale: 6
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
@@ -707,14 +707,14 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
+    - _GlowColor: {r: 0.9707701, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!28 &28550495468938018
+--- !u!28 &28431319794114158
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

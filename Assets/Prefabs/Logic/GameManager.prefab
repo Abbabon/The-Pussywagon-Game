@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143464304730431451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 787.45917, y: 422.31677, z: -9.388009}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818b412a00b164dd3b3ed73d0ea18e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpeedFactor: 0.0125
+  SpeedFactorIncrement: 0.025
   currentBabe: {fileID: 0}
+  paparaziFlash: {fileID: 0}
+  flashDuration: 3
