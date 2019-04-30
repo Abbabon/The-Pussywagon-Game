@@ -65,6 +65,9 @@ public class SoundManager : MonoBehaviour
                     currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Tamar");
                     StartBackgroundMusic();
                     return;
+                case 5: //outro screen
+                    currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Tamar");
+                    return;
                 case 2: //tutorial
                     currentSoundEffectsAudioSource.clip = Resources.Load<AudioClip>("Music/Turkish2");
                     StartBackgroundMusic();
@@ -180,6 +183,8 @@ public class SoundManager : MonoBehaviour
         GirlsCop,
 
         EtcRingtone,
+        EtcHandcuffs,
+        EtcThreat,
         EtcAnswer,
         EtcFriendHigh,
         EtcFriendLow,

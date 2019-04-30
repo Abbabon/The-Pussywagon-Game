@@ -575,15 +575,15 @@ public class GameManager : MonoBehaviour
         FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcAnswer, 0), 3.9f);
 
         float babePercentage = (float)babesGatheredInStage / totalBabesInStage;
-        //if (babePercentage <= 0.4f){
-        //    FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendLow, 0), 5f);
-        //}
-        //else if (babePercentage <= 0.75f){
-        //    FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendMid, 0), 5f);
-        //}
-        //else{
+        if (babePercentage <= 0.4f){
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendLow, 0), 5f);
+        }
+        else if (babePercentage <= 0.75f){
+            FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendMid, 0), 5f);
+        }
+        else{
             FunctionTimer.Create(() => SoundManager.Instance.PlaySpecificDialogue(SoundManager.DialogueCategories.EtcFriendHigh, 0), 5f);
-        //}
+        }
     }
 
     public void LevelEnded()
@@ -627,8 +627,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    internal void ToMainMenu()
-    {
+    internal void ToMainMenu(){
         SceneManager.LoadScene(0);
     }
 
