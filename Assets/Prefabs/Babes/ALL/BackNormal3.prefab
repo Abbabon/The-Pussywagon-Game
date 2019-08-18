@@ -459,7 +459,7 @@ MonoBehaviour:
   useExportedFrame: 0
   customFrameName: 
   generatesOnStart: 0
-  generatesOnValidate: 1
+  generatesOnValidate: 0
 --- !u!114 &362747965037003600
 MonoBehaviour:
   m_ObjectHideFlags: 0

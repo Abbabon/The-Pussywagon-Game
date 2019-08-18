@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atlas - Background
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: c78c7435a2ac94a2d8c7eb1ff6bfb804, type: 3}
+    - {fileID: 2800000, guid: 9c8d17ed7c9d243e68db7206255bd020, type: 3}
+    - {fileID: 2800000, guid: 6c586dd2d325d471198ae36677197ec7, type: 3}
+    - {fileID: 2800000, guid: 71db5405585a04b5aaf2d99df0d1338a, type: 3}
+    - {fileID: 2800000, guid: bafed8f322f6c4e0889734cdf2c8d8e8, type: 3}
+    - {fileID: 2800000, guid: fc7abe32d293a2044b7748b336a49023, type: 3}
+    - {fileID: 2800000, guid: add472ae8aa587142a3d91405b9c2736, type: 3}
+    - {fileID: 2800000, guid: 4076d7f424034774eaa0130d17e53dd1, type: 3}
+    - {fileID: 2800000, guid: 515596d230e1c004fbadd56238602d65, type: 3}
+    - {fileID: 2800000, guid: 36e288e57cb09cb41a25a36a956b2dab, type: 3}
+    - {fileID: 2800000, guid: 14d3f574ac53ee74f98d5fd99d6058e5, type: 3}
+    - {fileID: 2800000, guid: 5283fc2a69956724e9e1a52f79273d9c, type: 3}
+    - {fileID: 2800000, guid: 5b8a69ac82b71f54999b8d9fb825bcc6, type: 3}
+    - {fileID: 2800000, guid: a75e829a43ca4f44b89b6e254802f895, type: 3}
+    - {fileID: 2800000, guid: 571febdee9a09b746877d30453d5c5b8, type: 3}
+    - {fileID: 2800000, guid: 831d9976766d6df4c9f93c6eefead445, type: 3}
+    - {fileID: 2800000, guid: ee69a22b6803e68469c19072cf584410, type: 3}
+    - {fileID: 2800000, guid: 852816ff67d1e1741bd5ddffa9fccdd6, type: 3}
+    - {fileID: 2800000, guid: dd34c9a8133dbf048aaa153f93f25e77, type: 3}
+    - {fileID: 2800000, guid: f04a8698a861c8547b9799283f353d3c, type: 3}
+    - {fileID: 2800000, guid: 12363faad248ee540afd4db129e0db8f, type: 3}
+    - {fileID: 2800000, guid: bbca03feb5626a540af4accd6659caca, type: 3}
+    - {fileID: 2800000, guid: c5c06e9e9ff9fd4458f3319f06431ace, type: 3}
+    - {fileID: 2800000, guid: fce51d812b5273b45a4bc3381398a297, type: 3}
+    - {fileID: 2800000, guid: 029925563535062468bede02ca51b55f, type: 3}
+    - {fileID: 2800000, guid: 11a2849bf89cabe448213b9ae2650936, type: 3}
+    - {fileID: 2800000, guid: 8b1eb12bc06b8a345ba053f65d5807f5, type: 3}
+    - {fileID: 2800000, guid: 38d4b74da02607e41ab0f60af735cea9, type: 3}
+    - {fileID: 2800000, guid: fdfd12c0bb496024d96da2f9f3e17d5f, type: 3}
+    - {fileID: 2800000, guid: 18616257415ed8a44a1814c0a9d168e2, type: 3}
+    - {fileID: 2800000, guid: 581b652dadd6b014cb30ee9298099337, type: 3}
+    - {fileID: 2800000, guid: 1412b66d50f824d3d9043aae0faca911, type: 3}
+    - {fileID: 2800000, guid: 533c465e70c08934e9b342036d160c48, type: 3}
+    - {fileID: 2800000, guid: f7f12363032f74b0d98e482664ffcaac, type: 3}
+    totalSpriteSurfaceArea: 7083628
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: fdfd12c0bb496024d96da2f9f3e17d5f, type: 3}
+  - {fileID: 21300000, guid: fce51d812b5273b45a4bc3381398a297, type: 3}
+  - {fileID: 21300000, guid: fc7abe32d293a2044b7748b336a49023, type: 3}
+  - {fileID: 21300000, guid: 515596d230e1c004fbadd56238602d65, type: 3}
+  - {fileID: 21300000, guid: 6c586dd2d325d471198ae36677197ec7, type: 3}
+  - {fileID: 21300000, guid: f7f12363032f74b0d98e482664ffcaac, type: 3}
+  - {fileID: 21300000, guid: bafed8f322f6c4e0889734cdf2c8d8e8, type: 3}
+  - {fileID: 21300000, guid: 14d3f574ac53ee74f98d5fd99d6058e5, type: 3}
+  - {fileID: 21300000, guid: 4076d7f424034774eaa0130d17e53dd1, type: 3}
+  - {fileID: 21300000, guid: 71db5405585a04b5aaf2d99df0d1338a, type: 3}
+  - {fileID: 21300000, guid: c78c7435a2ac94a2d8c7eb1ff6bfb804, type: 3}
+  - {fileID: 21300000, guid: 36e288e57cb09cb41a25a36a956b2dab, type: 3}
+  - {fileID: 21300000, guid: 029925563535062468bede02ca51b55f, type: 3}
+  - {fileID: 21300000, guid: 831d9976766d6df4c9f93c6eefead445, type: 3}
+  - {fileID: 21300000, guid: 18616257415ed8a44a1814c0a9d168e2, type: 3}
+  - {fileID: 21300000, guid: f04a8698a861c8547b9799283f353d3c, type: 3}
+  - {fileID: 21300000, guid: dd34c9a8133dbf048aaa153f93f25e77, type: 3}
+  - {fileID: 21300000, guid: 5283fc2a69956724e9e1a52f79273d9c, type: 3}
+  - {fileID: 21300000, guid: a75e829a43ca4f44b89b6e254802f895, type: 3}
+  - {fileID: 21300000, guid: 12363faad248ee540afd4db129e0db8f, type: 3}
+  - {fileID: 21300000, guid: 8b1eb12bc06b8a345ba053f65d5807f5, type: 3}
+  - {fileID: 21300000, guid: ee69a22b6803e68469c19072cf584410, type: 3}
+  - {fileID: 21300000, guid: 11a2849bf89cabe448213b9ae2650936, type: 3}
+  - {fileID: 21300000, guid: 5b8a69ac82b71f54999b8d9fb825bcc6, type: 3}
+  - {fileID: 21300000, guid: 581b652dadd6b014cb30ee9298099337, type: 3}
+  - {fileID: 21300000, guid: 38d4b74da02607e41ab0f60af735cea9, type: 3}
+  - {fileID: 21300000, guid: 1412b66d50f824d3d9043aae0faca911, type: 3}
+  - {fileID: 21300000, guid: 9c8d17ed7c9d243e68db7206255bd020, type: 3}
+  - {fileID: 21300000, guid: 533c465e70c08934e9b342036d160c48, type: 3}
+  - {fileID: 21300000, guid: c5c06e9e9ff9fd4458f3319f06431ace, type: 3}
+  - {fileID: 21300000, guid: add472ae8aa587142a3d91405b9c2736, type: 3}
+  - {fileID: 21300000, guid: 571febdee9a09b746877d30453d5c5b8, type: 3}
+  - {fileID: 21300000, guid: bbca03feb5626a540af4accd6659caca, type: 3}
+  - {fileID: 21300000, guid: 852816ff67d1e1741bd5ddffa9fccdd6, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Vehicle1
+  - TABack2
+  - Jerusalem
+  - Building3@4x
+  - Cloud
+  - Hole
+  - Sky
+  - Building5@4x
+  - Building2@4x
+  - Road
+  - Bush1
+  - Building4@4x
+  - TAFront
+  - Building10@4x
+  - Vehicle2
+  - Fog
+  - Field
+  - Building6@4x
+  - Building8@4x
+  - Plane
+  - Lamed
+  - Building11@4x
+  - TAPark
+  - Building7@4x
+  - Vehicle3
+  - Paparazzi
+  - PoliceBarricade
+  - Bush2
+  - Road3
+  - TABack
+  - Building1@4x
+  - Building9@4x
+  - Sidewalk
+  - Building12@4x
+  m_Tag: Atlas - Background
+  m_IsVariant: 0

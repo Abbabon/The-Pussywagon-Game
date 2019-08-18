@@ -10,6 +10,11 @@ public class UIHandler : MonoBehaviour
         GameManager.Instance.StartGame();
     }
 
+    public void ShowInstructions()
+    {
+        GameManager.Instance.ShowInstructions();
+    }
+
     public void ToMainMenu()
     {
         GameManager.Instance.ToMainMenu();

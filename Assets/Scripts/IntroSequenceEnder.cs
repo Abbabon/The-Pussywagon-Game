@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class IntroSequenceEnder : MonoBehaviour
 {
     PlayableDirector sequence;
+    public GameObject blackScreen;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class IntroSequenceEnder : MonoBehaviour
     {
         if (sequence.state != PlayState.Playing)
         {
+            blackScreen.SetActive(true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

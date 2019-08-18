@@ -88,6 +88,8 @@ public class GameManager : MonoBehaviour
     private GameObject babesCounter;
     private Timer dialogueTimer;
 
+    private CanvasGroup instructions;
+
     #endregion
 
     private GameObject player;
@@ -95,12 +97,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("AWAKE");
         lock (padlock)
         {
             if (_instance != null && _instance != this)
             {
-                Debug.Log("DESTROY");
                 Destroy(this.gameObject);
             }
             else
@@ -152,6 +152,15 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
 
         // meaning after the title and intro screens:
+        if (scene.buildIndex == 0)
+        {
+            GameObject instructionsGroup = GameObject.Find("GameInstructions");
+            if (instructionsGroup != null)
+            {
+                instructions = instructionsGroup.GetComponent<CanvasGroup>();
+                instructions.alpha = 0;
+            }
+        }
         if (scene.buildIndex > 1)
         {
             dialogueCanvas = GameObject.Find("DialogueCanvas");
@@ -238,7 +247,6 @@ public class GameManager : MonoBehaviour
     private void PlayFadeIn()
     {
         if (fadeCanvas != null){
-            Debug.Log("Fading In");
             fadeCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
         }
     }
@@ -247,7 +255,6 @@ public class GameManager : MonoBehaviour
     {
         if (fadeCanvas != null)
         {
-            Debug.Log("Fading Out");
             fadeCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
         }
     }
@@ -334,7 +341,6 @@ public class GameManager : MonoBehaviour
                 //does the babe accept the option?
                 if (babeOptions[currentBabe.babeType].Contains(option) || (option == OptionType.Compliment && ComplimentReceived()))
                 {
-                    Debug.Log("Chose Correctly!");
 
                     babesGathered += 1;
                     babesGatheredInStage += 1;
@@ -362,8 +368,6 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("DENIED");
-
                     if (SceneManager.GetActiveScene().buildIndex == 4)
                     { //jerusalem level
                         if (option == OptionType.Compliment)
@@ -427,12 +431,10 @@ public class GameManager : MonoBehaviour
             SpeedFactor += SpeedFactorIncrement;
         }
         else{
-            Debug.Log("Max amount of cops!");
+            //Max amount of cops!
         }
         UpdateCopsGUI();
     }
-
-
 
     public enum DialogueResult
     {
@@ -513,7 +515,6 @@ public class GameManager : MonoBehaviour
             //GAME OVER
             if (cash < 0)
             {
-                Debug.Log("GameOver!");
                 uiCanvas.GetComponent<Canvas>().enabled = false;
                 gameOverCanvas.GetComponent<Canvas>().enabled = true;
                 SoundManager.Instance.LowerMusicVolume();
@@ -609,6 +610,25 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + (finishedTutorial ? 3 : 1));
     }
 
+    //called only from main screen... there must be a finer way:
+    
+    internal void ShowInstructions()
+    {
+        if (instructions.alpha < 1){
+            StartCoroutine("FadeInInstructions");    
+        }
+    }
+
+    private float _fadeoutTime = 1f;
+    IEnumerator FadeInInstructions()
+    {
+        for (float t = 0.0f; t <= 1.0f; t += Time.deltaTime / _fadeoutTime)
+        {
+            instructions.alpha = Mathf.Lerp(0f, 1f, t);
+            yield return null;
+        }
+    }
+
     internal void FinishedTutorial(){
         finishedTutorial = true;
         NextLevel();
@@ -664,4 +684,6 @@ public class GameManager : MonoBehaviour
             paused = true;
         }
     }
+
+
 }

@@ -171,7 +171,6 @@ GameObject:
   - component: {fileID: 1371105872595703718}
   - component: {fileID: 113542667368693140}
   - component: {fileID: 8781255576816945174}
-  - component: {fileID: 1156804851364902058}
   - component: {fileID: 3713235409881884337}
   - component: {fileID: 7641423240773307176}
   m_Layer: 0
@@ -270,36 +269,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 2}
   m_EdgeRadius: 0
---- !u!114 &1156804851364902058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5486259618236531280}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d0e230e81a2f3148b6986fcb2c57e81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: 20
-  blurSize: 6
-  color: {r: 1, g: 1, b: 1, a: 1}
-  blurAlphaMultiplier: 0.7
-  blurAlphaChoke: 1
-  invertBlur: 0
-  alphaThreshold: 0.5
-  includeChildren: 1
-  childLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  ignoreChildNames: []
-  sortMethod: 1
-  isAnimated: 1
-  useExportedFrame: 0
-  customFrameName: 
-  generatesOnStart: 0
-  generatesOnValidate: 1
 --- !u!114 &3713235409881884337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,11 +650,11 @@ MonoBehaviour:
     m_Bits: 1
   ignoreChildNames: []
   sortMethod: 1
-  isAnimated: 1
+  isAnimated: 0
   useExportedFrame: 0
   customFrameName: 
   generatesOnStart: 0
-  generatesOnValidate: 1
+  generatesOnValidate: 0
 --- !u!1 &9191226139308874274
 GameObject:
   m_ObjectHideFlags: 0

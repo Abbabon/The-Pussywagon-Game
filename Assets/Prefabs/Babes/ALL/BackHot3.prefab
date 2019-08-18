@@ -216,7 +216,7 @@ MonoBehaviour:
     m_Bits: 1
   ignoreChildNames: []
   sortMethod: 1
-  isAnimated: 1
+  isAnimated: 0
   useExportedFrame: 0
   customFrameName: 
   generatesOnStart: 0

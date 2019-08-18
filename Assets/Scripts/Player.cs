@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2((horizontalVelocity * GameManager.Instance.SpeedFactor), rb.velocity.y);
 
             // handle vertical movement
-            if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow)) && (currentLane < numberOfLanes))
+            if ((swipeController.SwipeUp || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && (currentLane < numberOfLanes))
             {
                 if (currentLaneMovementTween == null || !currentLaneMovementTween.active)
                 {
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
                     currentLane++;
                 }
             }
-            else if ((swipeController.SwipeDown || Input.GetKeyDown(KeyCode.DownArrow)) && (currentLane > 1))
+            else if ((swipeController.SwipeDown || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && (currentLane > 1))
             {
                 if (currentLaneMovementTween == null || !currentLaneMovementTween.active)
                 {

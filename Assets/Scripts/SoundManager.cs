@@ -22,12 +22,10 @@ public class SoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Debug.Log("AWAKE");
         lock (padlock)
         {
             if (_instance != null && _instance != this)
             {
-                Debug.Log("DESTROY");
                 Destroy(this.gameObject);
             }
             else
@@ -54,7 +52,6 @@ public class SoundManager : MonoBehaviour
 
     public void PlayLevelMusic(){
         if (currentSoundEffectsAudioSource != null){
-            Debug.Log(String.Format("GettingLevelMusic for {0}", SceneManager.GetActiveScene().buildIndex));
             switch (SceneManager.GetActiveScene().buildIndex)
             {
                 case 0: //title screen
@@ -85,7 +82,6 @@ public class SoundManager : MonoBehaviour
                     return;
             }
         }
-        Debug.Log("Current Audio Source is not found!");
     }
 
     public void RegisterSoundEffectsAudioSource(AudioSource audioSource)
@@ -200,7 +196,6 @@ public class SoundManager : MonoBehaviour
         {
             dialogues.Add(dialogueCategory, new List<AudioClip>());
             String dialogueCategoryString = dialogueCategory.ToString();
-            Debug.Log(String.Format("Loading Dialogue for {0}", dialogueCategoryString));
             for (int i = 1; i < 50; i++)
             {
                 String assetPath;
@@ -217,7 +212,6 @@ public class SoundManager : MonoBehaviour
                 AudioClip clip = Resources.Load<AudioClip>(assetPath);
                 if (clip != null){
                     dialogues[dialogueCategory].Add(clip);
-                    Debug.Log(String.Format("Loaded {0}", assetPath));
                 }
                 else{
                     break;

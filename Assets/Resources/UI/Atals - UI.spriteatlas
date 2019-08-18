@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atals - UI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 7282ad5e56cfd674ea137b57f2c43adb, type: 3}
+    - {fileID: 2800000, guid: da268e82a9971bd49b1495f0c8cf1e87, type: 3}
+    - {fileID: 2800000, guid: 72b3593e975d9fa47bff8ea3ce2a9b40, type: 3}
+    - {fileID: 2800000, guid: 1dabf671295902240808a03e53075401, type: 3}
+    - {fileID: 2800000, guid: 483ca78970fc1394cae09bc34ae94609, type: 3}
+    - {fileID: 2800000, guid: 2d3c8420a59c0f64497dfc1848ca5bb4, type: 3}
+    - {fileID: 2800000, guid: 75ba6c1daef0c4545ad6875868c4240e, type: 3}
+    - {fileID: 2800000, guid: c6af4e2b9deb4354e802a2b96e9c2ca6, type: 3}
+    - {fileID: 2800000, guid: cb3e4dd59ea080b488a23af1f5c4f0a7, type: 3}
+    - {fileID: 2800000, guid: e27629c58eefb07499a57ec8f78406e8, type: 3}
+    - {fileID: 2800000, guid: 1652ec48a366b91469e846d27c287e22, type: 3}
+    - {fileID: 2800000, guid: f21a92b43ac7e6a4eb3d61120cc521b8, type: 3}
+    - {fileID: 2800000, guid: 79bb3b93b39dfa445bcbcc7d23e8e2bd, type: 3}
+    - {fileID: 2800000, guid: 6cb82f40156ee4f4baab1d1a77c5d8f6, type: 3}
+    - {fileID: 2800000, guid: a4b29ca6a420d9544afd622d575d6e08, type: 3}
+    - {fileID: 2800000, guid: 42d81ba8e103fc345be30c8ba64b7a03, type: 3}
+    - {fileID: 2800000, guid: d7484ab171d30c845bc1daf309d94595, type: 3}
+    - {fileID: 2800000, guid: 6bfc94e313630bf42ba4eedd128112f1, type: 3}
+    - {fileID: 2800000, guid: 6b3538e4fd4b9c742bace2656d265382, type: 3}
+    - {fileID: 2800000, guid: c5dbce6d07d052d4a934feb255f3d93d, type: 3}
+    - {fileID: 2800000, guid: a9b9be30274e45b4c8403f63b90c8ec3, type: 3}
+    - {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 10904, guid: 0000000000000000f000000000000000, type: 0}
+    totalSpriteSurfaceArea: 1525638
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 2d3c8420a59c0f64497dfc1848ca5bb4, type: 3}
+  - {fileID: 21300000, guid: a9b9be30274e45b4c8403f63b90c8ec3, type: 3}
+  - {fileID: 21300000, guid: 6cb82f40156ee4f4baab1d1a77c5d8f6, type: 3}
+  - {fileID: 21300000, guid: 1dabf671295902240808a03e53075401, type: 3}
+  - {fileID: 21300000, guid: d7484ab171d30c845bc1daf309d94595, type: 3}
+  - {fileID: 21300000, guid: da268e82a9971bd49b1495f0c8cf1e87, type: 3}
+  - {fileID: 21300000, guid: 79bb3b93b39dfa445bcbcc7d23e8e2bd, type: 3}
+  - {fileID: 21300000, guid: 6bfc94e313630bf42ba4eedd128112f1, type: 3}
+  - {fileID: 21300000, guid: f21a92b43ac7e6a4eb3d61120cc521b8, type: 3}
+  - {fileID: 21300000, guid: 6b3538e4fd4b9c742bace2656d265382, type: 3}
+  - {fileID: 21300000, guid: e27629c58eefb07499a57ec8f78406e8, type: 3}
+  - {fileID: 21300000, guid: cb3e4dd59ea080b488a23af1f5c4f0a7, type: 3}
+  - {fileID: 21300000, guid: a4b29ca6a420d9544afd622d575d6e08, type: 3}
+  - {fileID: 21300000, guid: 1652ec48a366b91469e846d27c287e22, type: 3}
+  - {fileID: 21300000, guid: 42d81ba8e103fc345be30c8ba64b7a03, type: 3}
+  - {fileID: 21300000, guid: 483ca78970fc1394cae09bc34ae94609, type: 3}
+  - {fileID: 21300000, guid: c6af4e2b9deb4354e802a2b96e9c2ca6, type: 3}
+  - {fileID: 21300000, guid: 75ba6c1daef0c4545ad6875868c4240e, type: 3}
+  - {fileID: 21300000, guid: c5dbce6d07d052d4a934feb255f3d93d, type: 3}
+  - {fileID: 21300000, guid: 72b3593e975d9fa47bff8ea3ce2a9b40, type: 3}
+  - {fileID: 21300000, guid: 7282ad5e56cfd674ea137b57f2c43adb, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ButtonYellow
+  - uiRectEmpty
+  - PoliceRed
+  - ButtonRed
+  - Tickets
+  - ButtonBlue
+  - police-full
+  - uiBorder
+  - police-empty
+  - uiRect
+  - Drugs
+  - Dog
+  - Shekel
+  - FakeBrand
+  - Sign
+  - ButtonRed150
+  - Compliment
+  - Candy
+  - uiRect 1
+  - ButtonGreen
+  - backgroundSmall
+  m_Tag: Atals - UI
+  m_IsVariant: 0

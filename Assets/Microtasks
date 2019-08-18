@@ -1,0 +1,24 @@
+- touch controller:
+
+	- pump
+	- sails
+	- cooler?
+	- boost
+
+- define 'screen parts' for the touch controls? or just for the cooler
+
+- boost handle mock visuals (find some)
+
+- Sails 3 levels of folding (with timer to gently return them)
+
+- engine level mock -> real thing (via animation)
+
+- implement other systems:
+
+	- engine behavior
+	- fuel system
+	- speed
+
+- speedometer
+
+- particles to indicate speed ?

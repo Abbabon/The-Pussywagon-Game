@@ -27,7 +27,6 @@ public class DialogueButton : MonoBehaviour
 
     public void OptionClicked()
     {
-        Debug.Log("Option Clicked");
         if (isAvailable){
             GameManager.Instance.ChooseOption(currentOption);
         }

@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atlas - Protagonist
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 61bd38f37f91511428fc002d3dfa32f2, type: 3}
+    - {fileID: 2800000, guid: a3906a39af550a74da8410e70c586108, type: 3}
+    - {fileID: 2800000, guid: a8b690d237b197c45908abfee42bcbff, type: 3}
+    - {fileID: 2800000, guid: f578f702415092840b12def8809977a3, type: 3}
+    - {fileID: 2800000, guid: b68337d640c730f4e97e21ecbeb3691e, type: 3}
+    - {fileID: 2800000, guid: 62748b8213bcc2c41969dacfa0fd1173, type: 3}
+    - {fileID: 2800000, guid: 5aeb11304953b7547b784afd51a08407, type: 3}
+    - {fileID: 2800000, guid: 72d7a6c550851674c8fa421a98ba8b66, type: 3}
+    totalSpriteSurfaceArea: 683779
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 5aeb11304953b7547b784afd51a08407, type: 3}
+  - {fileID: 21300000, guid: f578f702415092840b12def8809977a3, type: 3}
+  - {fileID: 21300000, guid: 62748b8213bcc2c41969dacfa0fd1173, type: 3}
+  - {fileID: 21300000, guid: a8b690d237b197c45908abfee42bcbff, type: 3}
+  - {fileID: 21300000, guid: 61bd38f37f91511428fc002d3dfa32f2, type: 3}
+  - {fileID: 21300000, guid: 72d7a6c550851674c8fa421a98ba8b66, type: 3}
+  - {fileID: 21300000, guid: b68337d640c730f4e97e21ecbeb3691e, type: 3}
+  - {fileID: 21300000, guid: a3906a39af550a74da8410e70c586108, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Van
+  - BackWheel@2x
+  - ToothGlow
+  - ABVan
+  - AB
+  - Phone
+  - FrontWheel@2x
+  - ABhead
+  m_Tag: Atlas - Protagonist
+  m_IsVariant: 0

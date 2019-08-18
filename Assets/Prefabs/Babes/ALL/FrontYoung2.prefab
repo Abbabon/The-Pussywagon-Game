@@ -271,7 +271,7 @@ MonoBehaviour:
   useExportedFrame: 0
   customFrameName: 
   generatesOnStart: 0
-  generatesOnValidate: 1
+  generatesOnValidate: 0
 --- !u!95 &6929200302550674572
 Animator:
   serializedVersion: 3
@@ -302,7 +302,6 @@ GameObject:
   - component: {fileID: 6231875478259863607}
   - component: {fileID: 2735802528093286519}
   - component: {fileID: 3484256550687869643}
-  - component: {fileID: 4851895033783151302}
   - component: {fileID: 5519385047622271615}
   m_Layer: 0
   m_Name: FrontYoung2
@@ -400,36 +399,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!114 &4851895033783151302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6976212337687480534}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d0e230e81a2f3148b6986fcb2c57e81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: 20
-  blurSize: 6
-  color: {r: 1, g: 1, b: 1, a: 1}
-  blurAlphaMultiplier: 0.7
-  blurAlphaChoke: 1
-  invertBlur: 0
-  alphaThreshold: 0.5
-  includeChildren: 0
-  childLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  ignoreChildNames: []
-  sortMethod: 1
-  isAnimated: 0
-  useExportedFrame: 0
-  customFrameName: 
-  generatesOnStart: 0
-  generatesOnValidate: 1
 --- !u!114 &5519385047622271615
 MonoBehaviour:
   m_ObjectHideFlags: 0

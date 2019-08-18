@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
     void Update()
     {
         if (isRunning){
-            remainingTime -= Time.deltaTime*GameManager.Instance.SpeedFactor;
+            remainingTime -= Time.deltaTime;
 
             timerText.text = Extentions.Reverse(((int)remainingTime).ToString());
             if (remainingTime < 0)

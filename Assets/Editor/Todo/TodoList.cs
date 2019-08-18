@@ -37,11 +37,9 @@ public class TodoList : EditorWindow
 		// Create our data if we have none.
 		if(_listData == null)
 		{
-			//Debug.Log("no asset file found, need to reload");
 			_listData = AssetDatabase.LoadAssetAtPath( _listDataAssetPath, typeof(ListData)) as ListData;
 			if(_listData == null)
 			{
-				//Debug.Log("no asset file found, could not reload");	
 				_listData = ScriptableObject.CreateInstance(typeof(ListData)) as ListData;
                 System.IO.Directory.CreateDirectory(Application.dataPath + _listDataDirectory);
 				AssetDatabase.CreateAsset(_listData, _listDataAssetPath );
@@ -173,7 +171,6 @@ public class TodoList : EditorWindow
 		
 		if(GUI.changed)
 		{
-			//Debug.Log("Save Data: " + _listData.items.Count);
 			EditorUtility.SetDirty(_listData);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.SaveAssets();		
