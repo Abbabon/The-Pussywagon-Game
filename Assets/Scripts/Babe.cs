@@ -14,7 +14,6 @@ public class Babe : MonoBehaviour
     [SerializeField]
     private SpriteRenderer outglowSR;
 
-
     private void Start()
     {
         GameManager.Instance.TotalBabesInStage += 1;
@@ -37,8 +36,7 @@ public class Babe : MonoBehaviour
         outglowSR.enabled = false;
     }
 
-    private void OnMouseDown()
-    {
+    private void OnMouseDown(){
         Interact();
     }
 
